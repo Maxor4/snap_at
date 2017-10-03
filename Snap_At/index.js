@@ -12,8 +12,12 @@ registerScreens();
 Navigation.startSingleScreenApp({
     screen: {
         screen: 'SA.Connexion', // unique ID registered with Navigation.registerScreen
-        title: 'Connexion', // title of the screen as appears in the nav bar (optional)
-        navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+        title: 'Authentication', // title of the screen as appears in the nav bar (optional)
+        navigatorStyle: {
+            navBarTextColor : '#FF8929',
+            navBarBackgroundColor: '#2F3649',
+            navBarTitleTextCentered: true
+        }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
         navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
     }
 });
