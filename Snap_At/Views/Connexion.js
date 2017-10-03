@@ -38,19 +38,17 @@ export default class Snap_At extends Component {
                     this.setState({email: text})
                 }}
                     returnKeyType={'next'}
-                onSubmitEditing={this.refs.passwd.focus()}
                 />
                 <TextInput
                 ref={'passwd'}
                 style={styles.input}
                 value={this.state.psswd}
                 keyboardType={'email-address'}
-                placeholder={'Email'}
+                placeholder={'Password'}
                 onChangeText={(text) => {
                     this.setState({psswd: text})
                 }}
                 returnKeyType={'next'}
-                onSubmitEditing={this.refs.passwd.focus()}
                 />
                 <TouchableOpacity style={styles.bouton}
                 onPress={this._handlePress.bind(this)}>
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
         width: width*(2/3),
         justifyContent: 'center',
         borderRadius: 8,
-        backgroundCOlor: '#0905c0'
+        backgroundColor: '#0905c0'
     },
     txtBouton:{
         textAlign: 'center',
