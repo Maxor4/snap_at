@@ -14,23 +14,43 @@ import {
     View
 } from 'react-native';
 
-var width = Dimensions.get('window').width
-var height = Dimensions.get('window').height
+import { Navigation } from 'react-native-navigation';
+//import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import {ws} from '../index.js'
+
+var width = Dimensions.get('window').width;
+var height = Dimensions.get('window').height;
+
 export default class Connexion extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             email: '',
-            passwd: ''
+            passwd: '',
+            visibleCheckEmail: this.validateEmail(email),
+            connexion: false
         };
     }
+
+    validateEmail = (email) => {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    };
+
+    focusNextField = () => {
+        this.refs['mdp'].focus();
+    };
+
+
 
     render() {
         return (
             <View style={styles.container}>
                 <Text style={styles.welcomeMessage}>Welcome to SNAP-AT. {"\n"} Please, authenticate yourself.</Text>
-                <TextInput
+                <View>
+                    <TextInput
                     ref={'email'}
                     style={styles.input}
                     value={this.state.email}
@@ -38,13 +58,13 @@ export default class Connexion extends Component {
                     placeholder={'Email'}
                     underlineColorAndroid={'transparent'}
                     onChangeText={(text) => {
-                        this.setState({email: text})
-                    }}
-                    onSubmitEditing={(event) => {
-                        this.refs.passwd.focus();
-                    }}
+                            this.setState({email: text})
+                        }}
+                    onSubmitEditing={this.focusNextField.bind(this)}
                     returnKeyType={'next'}
                 />
+                    //{this.state.visibleCheckEmail ? <Icon style={styles.checkEmail} name="check" size={30} /> : null}
+                    </View>
                 <TextInput
                     ref={'passwd'}
                     style={styles.input}
@@ -55,27 +75,28 @@ export default class Connexion extends Component {
                     onChangeText={(text) => {
                         this.setState({psswd: text})
                     }}
-                    onSubmitEditing={(event) => {
-                        this._handlePress.bind(this)
-                    }}
+                    onSubmitEditing={this._handlePress.bind(this)}
                     returnKeyType={'done'}
                 />
                 <TouchableOpacity style={styles.bouton}
                 onPress={this._handlePress.bind(this)}>
-                    <Text style={styles.txtBouton}> Connect </Text>
+                    {this.state.connexion ? <ActivityIndicator color={Couleurs.bleuAccueil}/> : <Text style={styles.texteConnexion}>Se connecter</Text>}
                 </TouchableOpacity>
             </View>
         );
     }
 
     _handlePress(){
-        let email= this.state.email,
-            passwd = this.state.psswd;
-
-
-        this.props.navigator.resetTo({
-            screen: 'SA.ListeBesoins'
-        })
+        if (!this.state.connexion){
+            ws.connexion(this.state.mdp, () => {
+                this.props.navigator.resetTo({
+                    screen: 'SA.ListeBesoins'
+                })
+            }, (data) => {
+                alert(data.message);
+            });
+            this.setState({connexion : true})
+        }
     }
 }
 
