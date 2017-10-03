@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import {
+    AsyncStorage,
     Dimensions,
     FlatList,
     ScrollView,
@@ -12,26 +13,40 @@ import {
 } from 'react-native';
 
 import Swipeable from 'react-native-swipeable';
+import { Navigation } from 'react-native-navigation';
 
-var width = Dimensions.get('window').width;
+import {ws} from '../index.js'
+
+var width = Dimensions.get('window').width,
+    timeoutBouton= 2000;
+
+function arrayFromHashes(first, second) {
+    let temp = [],
+        idsOk = [];
+    for(let i in first) {
+        temp.push(first[i]);
+        idsOk.push(first[i].id_besoin);
+    }
+    for(let i in second) {
+        if(typeof(idsOk[second[i].id_besoin]) == 'undefined') {
+            temp.push(second[i]);
+        }
+    }
+    return temp;
+}
+
 
 export default class ListeBesoins extends Component {
 
     constructor(props) {
         super(props);
 
-        rightButtons = [
-            <TouchableOpacity style={{backgroundColor: 'red'}} onPress={()=> {this.delete.bind(this)}}><Text>Delete</Text></TouchableOpacity>,
-        ];
-
         this.props.navigator.setTitle({
             title: "Dynamic Title" // the new title of the screen as appears in the nav bar
         });
 
         this.state = {
-            isSwiping: false,
-            swipeable: null,
-        data: [
+            data: [
                 {titre: 'hello', date:'3 avril', statut: 'validé'},
                 {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
                 {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'},
@@ -46,64 +61,165 @@ export default class ListeBesoins extends Component {
                 {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'},
                 {titre: 'hello', date:'3 avril', statut: 'validé'},
                 {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
-                {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'}]
+                {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'}],
+
+            press: true,
+            refreshing: true,
+            liste: false
+
         };
     }
 
-    handleUserBeganScrollingParentView() {
-        this.state.swipeable.recenter();
+    componentDidMount()
+    {
+        this.refreshListe();
     }
 
-    delete(){
-        alert('coucou')
+
+    _ajoutBesoin() {
+        this.props.navigator.push({
+            screen: 'SA.FicheBesoins'
+        })
     }
+
+    affichageAjoutPatient() {
+        return (<SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {bottom : 15}]} onPress={this._ajoutBesoin.bind(this)}/>);
+    }
+
+    recherche(text) {
+        let temp = arrayFromHashes(ws.besoins),
+            besoinFilter = ws.besoins;
+
+        if(typeof text == 'string' && text.length > 0){
+            besoinFilter = {}
+            let regex = new RegExp(text.toLowerCase(), 'i');
+
+            for (let key in temp) {
+                if(temp[key].titre.toLowerCase().match(regex)) {
+                    besoinFilter[key] = temp[key];
+                }
+            }
+        }
+        this.setState({
+            data: besoinFilter
+        });
+    }
+
+
+    refreshListe() {
+
+        this.setState({
+            refreshing:true
+        });
+        ws.getListeBesoins((data) => {
+            this.setState({
+                dataSource: this.ds.cloneWithRows(ws.besoins),
+                refreshing: false
+            })
+        });
+    }
+
+
+
+    deleteBesoin(besoin){
+        let listeData = this.state.data, //listeData prend data
+            indexData = listeData.indexOf(besoin);
+
+        listeData.splice(indexData, 1); // supprime la ligne dans data
+
+        AsyncStorage.setItem('Wishlist', JSON.stringify(listeData), () => {
+                this.setState({
+                data: listeData  //on reset les states et enregistre la listes modifée
+            }, () =>   {
+                    this._onRefresh(); // on refresh pour être sûr que la modif apparaise à l'ecran
+                });
+        })
+
+    }
+
 
     _renderItem(item) {
+        let swipeoutBtns = [
+                {
+                    text: 'Delete',
+                    backgroundColor: 'blue',
+                    onPress: () => {
+                        this.deleteBesoin(itemSelect)
+                    }
+                }],
+
+            itemSelect = null;
+
         return(
-            <Swipeable rightButtons={this.rightButtons}
-                       onRef={ref => this.state.swipeable = ref}
-                       onSwipeStart={() => this.setState({isSwiping: true})}
-                       onSwipeRelease={() => this.setState({isSwiping: false})}>
-                <TouchableOpacity style={styles.touchable} onPress={() => {this._handlePress(item)}}>
-                    <View style={styles.titleAndDate}>
-                        <Text style={styles.titleText}>
-                            Titre : {item.titre}
-                        </Text>
-                        <Text style={styles.dateText}>
-                            Date : {item.date}
-                        </Text>
-                    </View>
-                    <View style={styles.status}>
-                        <Text style={styles.statusText}>
-                            Statut : {item.statut}
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            </Swipeable>
+        <Swipeout right={swipeoutBtns} autoClose={true} onOpen={() => {itemSelect = item }} buttonWidth={70} backgroundColor={'white'} style={{borderBottomWidth: 1}}>
+            <TouchableOpacity style={styles.touchable} onPress={() => {this._choixBesoin(item)}}>
+                <View style={styles.titleAndDate}>
+                    <Text style={styles.titleText}>
+                        Titre : {item.titre}
+                    </Text>
+                    <Text style={styles.dateText}>
+                        Date : {item.date}
+                    </Text>
+                </View>
+                <View style={styles.status}>
+                    <Text style={styles.statusText}>
+                        Statut : {item.statut}
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        </Swipeout>
         )
     };
 
-    render() {
+    EcranListe(){
         return (
-            <ScrollView scrollEnabled={!this.state.isSwiping}>
+            <ScrollView style={styles.container} refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.refreshListe.bind(this)}
+                            enabled={true}/>
+                    }>
+
                 <FlatList
                     data={this.state.data}
                     extraData={this.state}
-                    renderItem={this._renderItem.bind(this)}
+                    renderItem={({item}) => this._renderItem(item)}
                     keyExtractor={(item) => item.titre}
                 />
+                {this.affichageAjoutPatient()}
             </ScrollView>
         );
     }
 
-    _handlePress(item){
-        alert('zrabadabajdan')
-        /*this.props.navigator.push({
-            screen: 'SA.Besoin',
-            passProps: {
-                item: item
-            }
-        })*/
+    render() {
+        if (this.state.liste) {
+            return(this.EcranListe())
+        }
+        else {
+            return (
+                <View >
+                    <Text>
+                        Vous n'avez pas de commande en cours
+                    </Text>
+                </View>
+            );
+        }
+
+    }
+
+    _choixBesoin(id_besoin){
+        if (this.state.press) {
+            Navigation.handleDeepLink({
+                link: 'Patient',
+                payload : JSON.stringify(id_besoin)
+            })
+            this.setState({press: false});
+            setTimeout(() => {
+                this.setState({
+                    press:true
+                })
+            }, timeoutBouton)
+        }
     }
 }
 
@@ -114,6 +230,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
     },
+    ajoutBBesoin: {
+        position: 'absolute',
+        right : 15,
+        backgroundColor: 'transparent',
+        color: '#000',
+        fontSize: 60
+    },
+
     flatList: {
         backgroundColor: '#2F3649'
     },
