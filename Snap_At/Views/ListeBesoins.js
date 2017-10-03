@@ -26,16 +26,20 @@ export default class ListeBesoins extends Component {
 
     _renderItem(item) {
         return(
-            <TouchableOpacity style={{flexDirection: 'row', marginTop: 5}} onPress={this._handlePress(item)}>
-                <Text>
-                    {item.date}
-                </Text>
-                <Text>
-                    {item.titre}
-                </Text>
-                <Text>
-                    {item.statut}
-                </Text>
+            <TouchableOpacity style={{flexDirection: 'row', marginTop: 5, backgroundColor: '#fff'}} /*onPress={this._handlePress(item)}*/>
+                <View style={styles.titleAndDate}>
+                    <Text style={styles.title}>
+                        Titre : {item.titre}
+                    </Text>
+                    <Text style={styles.date}>
+                        Date : {item.date}
+                    </Text>
+                </View>
+                <View style={styles.status}>
+                    <Text>
+                        Statut : {item.statut}
+                    </Text>
+                </View>
             </TouchableOpacity>
         )
     };
@@ -43,22 +47,23 @@ export default class ListeBesoins extends Component {
     render() {
         return (
             <FlatList
+                style={styles.flatList}
                 data={this.state.data}
                 extraData={this.state}
-                renderItem={this._renderItem.bind(this)}
-                keyExtractor={(item, index) => item.id}
+                renderItem={({item}) => this._renderItem(item)}
+                keyExtractor={(item) => item.titre}
             />
         );
     }
 
-    _handlePress(item){
+   /* _handlePress(item){
         this.props.navigator.push({
             screen: 'SA.Besoin',
             passProps: {
                 item: item
             }
         })
-    }
+    }*/
 }
 
 const styles = StyleSheet.create({
@@ -68,4 +73,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
     },
+    flatList: {
+        backgroundColor: '#2F3649'
+    },
+    titleAndDate: {
+
+    },
+    status: {
+        display: 'flex'
+    },
+    date: {
+        textAlign: 'right'
+    },
+    title: {
+        textAlign: 'left'
+    }
+
 });

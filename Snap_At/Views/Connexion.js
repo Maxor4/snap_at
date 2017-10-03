@@ -55,7 +55,10 @@ export default class Connexion extends Component {
                     onChangeText={(text) => {
                         this.setState({psswd: text})
                     }}
-                    returnKeyType={'next'}
+                    onSubmitEditing={(event) => {
+                        this._handlePress.bind(this)
+                    }}
+                    returnKeyType={'done'}
                 />
                 <TouchableOpacity style={styles.bouton}
                 onPress={this._handlePress.bind(this)}>
@@ -70,7 +73,7 @@ export default class Connexion extends Component {
             passwd = this.state.psswd;
 
 
-        this.props.navigator.reset({
+        this.props.navigator.resetTo({
             screen: 'SA.ListeBesoins'
         })
     }
