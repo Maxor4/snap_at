@@ -21,13 +21,29 @@ export default class ListeBesoins extends Component {
         super(props);
 
         rightButtons = [
-            <TouchableOpacity style={{backgroundColor: 'red'}} onPress={this.delete.bind(this)}><Text>Delete</Text></TouchableOpacity>,
+            <TouchableOpacity style={{backgroundColor: 'red'}} onPress={()=> {this.delete.bind(this)}}><Text>Delete</Text></TouchableOpacity>,
         ];
+
+        this.props.navigator.setTitle({
+            title: "Dynamic Title" // the new title of the screen as appears in the nav bar
+        });
 
         this.state = {
             isSwiping: false,
             swipeable: null,
         data: [
+                {titre: 'hello', date:'3 avril', statut: 'validé'},
+                {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
+                {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'},
+                {titre: 'hello', date:'3 avril', statut: 'validé'},
+                {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
+                {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'},
+                {titre: 'hello', date:'3 avril', statut: 'validé'},
+                {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
+                {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'},
+                {titre: 'hello', date:'3 avril', statut: 'validé'},
+                {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
+                {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'},
                 {titre: 'hello', date:'3 avril', statut: 'validé'},
                 {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
                 {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'}]
@@ -48,17 +64,17 @@ export default class ListeBesoins extends Component {
                        onRef={ref => this.state.swipeable = ref}
                        onSwipeStart={() => this.setState({isSwiping: true})}
                        onSwipeRelease={() => this.setState({isSwiping: false})}>
-                <TouchableOpacity onPress={this._handlePress(item)}>
+                <TouchableOpacity style={styles.touchable} onPress={() => {this._handlePress(item)}}>
                     <View style={styles.titleAndDate}>
-                        <Text style={styles.title}>
+                        <Text style={styles.titleText}>
                             Titre : {item.titre}
                         </Text>
-                        <Text style={styles.date}>
+                        <Text style={styles.dateText}>
                             Date : {item.date}
                         </Text>
                     </View>
                     <View style={styles.status}>
-                        <Text>
+                        <Text style={styles.statusText}>
                             Statut : {item.statut}
                         </Text>
                     </View>
@@ -74,7 +90,7 @@ export default class ListeBesoins extends Component {
                     data={this.state.data}
                     extraData={this.state}
                     renderItem={this._renderItem.bind(this)}
-                    keyExtractor={(item, index) => item.id}
+                    keyExtractor={(item) => item.titre}
                 />
             </ScrollView>
         );
@@ -102,16 +118,37 @@ const styles = StyleSheet.create({
         backgroundColor: '#2F3649'
     },
     titleAndDate: {
-
+        flexDirection: 'row'
     },
     status: {
         display: 'flex'
+
     },
-    date: {
-        textAlign: 'right'
+    statusText: {
+        fontSize: 16,
+        color: '#FF8929',
+        marginLeft: 10,
+        marginBottom: width/4,
     },
-    title: {
-        textAlign: 'left'
+    dateText: {
+        width: width/2,
+        textAlign: 'right',
+        fontSize: 16,
+        color: '#FF8929'
+    },
+    titleText: {
+        width: width/2,
+        textAlign: 'left',
+        fontSize: 16,
+        color: '#FF8929',
+        marginTop: width/4,
+        marginLeft: 10
+    },
+    touchable:{
+        height: 70,
+        borderRadius: 8,
+        backgroundColor: '#2F3649',
+        marginTop : width*0.05
     }
 
 });
