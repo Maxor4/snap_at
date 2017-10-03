@@ -1,10 +1,16 @@
-import { Navigation } from 'react-native-navigation';
-import Connexion from './Views/Connexion'
-import {AppRegistry} from 'react-native'
 import React,{Component} from 'react'
+import { Navigation } from 'react-native-navigation';
+import {
+    AppRegistry
+} from 'react-native'
+
+import Connexion from './Views/Connexion'
+import ListeBesoins from './Views/ListeBesoins'
+
 
 export function registerScreens() {
     Navigation.registerComponent('SA.Connexion', () => Connexion);
+    Navigation.registerComponent('SA.ListeBesoins', () => ListeBesoins);
 }
 
 registerScreens();
