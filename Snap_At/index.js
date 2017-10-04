@@ -9,11 +9,14 @@ import WebService from './scripts/WebService';
 
 import Connexion from './Views/Connexion'
 import ListeBesoins from './Views/ListeBesoins'
+import FicheBesoin from './Views/FicheBesoin'
 
 
 export function registerScreens() {
     Navigation.registerComponent('SA.Connexion', () => Connexion);
     Navigation.registerComponent('SA.ListeBesoins', () => ListeBesoins);
+    Navigation.registerComponent('SA.FicheBesoin', () => FicheBesoin);
+
 }
 
 registerScreens();
