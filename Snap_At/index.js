@@ -12,12 +12,14 @@ import ListeBesoins from './Views/ListeBesoins'
 import FicheBesoin from './Views/FicheBesoin'
 import Couleurs from './scripts/Couleurs.js'
 import Besoin from './Views/Besoin'
+import Navbar from './Views/component/Navbar.js'
 
 
 export function registerScreens() {
     Navigation.registerComponent('SA.Connexion', () => Connexion);
     Navigation.registerComponent('SA.ListeBesoins', () => ListeBesoins);
     Navigation.registerComponent('SA.FicheBesoin', () => FicheBesoin);
+    Navigation.registerComponent('SA.Navbar.RechercheBesoin', () => Navbar);
     Navigation.registerComponent('SA.Besoin', () => Besoin);
 
 }
