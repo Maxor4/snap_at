@@ -11,7 +11,8 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,
+    findNodeHandle
 } from 'react-native';
 
 import { Navigation } from 'react-native-navigation';
@@ -42,6 +43,15 @@ export default class FicheBesoin extends Component {
             location: '',
             rate: null,
         };
+
+        this.props.navigator.setStyle({
+            navBarBackgroundColor: Couleurs.header.background,
+            navBarTextColor: Couleurs.header.title,
+            navBarButtonColor: Couleurs.header.title
+        })
+        this.props.navigator.setTitle({
+            title: 'Need sheet'
+        })
     }
 
     populatePicker(){
@@ -52,6 +62,11 @@ export default class FicheBesoin extends Component {
             )
         }
     }
+
+    textInputFocused() {
+        this.refs['mainScrollview'].contentOffset;
+    }
+
 
     affichageFactors(){
         if (!this.state.showFactors){
@@ -133,7 +148,7 @@ export default class FicheBesoin extends Component {
                         <Text></Text>
                     </TouchableOpacity>
                     <TextInput
-                        style={styles.inputCure}
+                        style={styles.input}
                         placeholder="Client"
                         value={this.state.client}
                         returnKeyType={'next'}
@@ -147,7 +162,7 @@ export default class FicheBesoin extends Component {
                         }}
                     />
                     <TextInput
-                        style={styles.inputCure}
+                        style={styles.input}
                         placeholder="Client"
                         value={this.state.client}
                         returnKeyType={'next'}
@@ -161,7 +176,7 @@ export default class FicheBesoin extends Component {
                         }}
                     />
                     <TextInput
-                        style={styles.inputCure}
+                        style={styles.input}
                         placeholder="Client"
                         value={this.state.client}
                         returnKeyType={'next'}
@@ -175,7 +190,7 @@ export default class FicheBesoin extends Component {
                         }}
                     />
                     <TextInput
-                        style={styles.inputCure}
+                        style={styles.input}
                         placeholder="Client"
                         value={this.state.client}
                         returnKeyType={'next'}
@@ -189,7 +204,7 @@ export default class FicheBesoin extends Component {
                         }}
                     />
                     <TextInput
-                        style={styles.inputCure}
+                        style={styles.input}
                         placeholder="Client"
                         value={this.state.client}
                         returnKeyType={'next'}
@@ -209,7 +224,7 @@ export default class FicheBesoin extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container} scrollEnabled={false} ref={'mainScrollview'}>
 
                 <View style={styles.viewGenerale}>
 
@@ -220,7 +235,7 @@ export default class FicheBesoin extends Component {
                                caretHidden={true}
                     />
 
-                    <TextInput style={styles.inputCure}
+                    <TextInput style={styles.input}
                                placeholder="Client"
                                value={this.state.client}
                                returnKeyType={'next'}
@@ -234,7 +249,7 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    <TextInput style={styles.inputFinCure}
+                    <TextInput style={styles.input}
                                placeholder="Contact Name"
                                value={this.state.contact}
                                returnKeyType={'next'}
@@ -248,7 +263,7 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    <TextInput style={styles.inputFrequence}
+                    <TextInput style={styles.input}
                                placeholder="Title"
                                value={this.state.titre}
                                returnKeyType={'next'}
@@ -262,7 +277,7 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    <TextInput style={styles.inputAdministration}
+                    <TextInput style={styles.input}
                                placeholder="Full Description"
                                value={this.state.dureeAdmin}
                                returnKeyType={'done'}
@@ -277,9 +292,8 @@ export default class FicheBesoin extends Component {
                     />
 
                     {this.affichageFactors}
-
-                    <View style={styles.viewCure}>
-                        <TextInput style={styles.inputCure}
+                    <View style={styles.durationView}>
+                        <TextInput style={styles.inputDuration}
                                    placeholder={"Duration (months)"}
                                    value={this.state.tempsDuree}
                                    returnKeyType={'next'}
@@ -300,11 +314,10 @@ export default class FicheBesoin extends Component {
                         >
                             {this.populatePicker()}
                         </Picker>
-
-                        <Text style={{marginLeft: 10}}>days/week</Text>
-
+                        <Text style={styles.dpw}>Days per week</Text>
                     </View>
-                    <TextInput style={styles.inputAdministration}
+
+                    <TextInput style={styles.input}
                                placeholder="Start at latest"
                                value={this.state.dateLatest}
                                returnKeyType={'done'}
@@ -318,13 +331,15 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    <TextInput style={styles.inputAdministration}
+
+                    <TextInput style={styles.input}
                                placeholder="Location"
                                value={this.state.location}
                                returnKeyType={'done'}
                                clearButtonMode={'never'}
                                keyboardType={'default'}
                                underlineColorAndroid='transparent'
+                               onFocus={this.textInputFocused.bind(this)}
                                onChangeText={(ville) => {
                                    this.setState({
                                        location: ville
@@ -332,7 +347,7 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    <TextInput style={styles.inputAdministration}
+                    <TextInput style={styles.input}
                                placeholder="Rate (€ HT)"
                                value={this.state.rate}
                                returnKeyType={'done'}
@@ -346,18 +361,18 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    <TouchableOpacity>
-                        <Text>Description File</Text>
+                    <TouchableOpacity style={styles.bouton}>
+                        <Text style={styles.txtBouton}>Description File</Text>
                     </TouchableOpacity>
 
                     {this.affichageConsultants}
 
-                    <TouchableOpacity onPress={(event) => this.saveShare.bind(this)}>
-                        <Text>Save & Share</Text>
+                    <TouchableOpacity style={styles.bouton} onPress={(event) => this.saveShare.bind(this)}>
+                        <Text style={styles.txtBouton}>Save & Share</Text>
                     </TouchableOpacity>
 
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 
@@ -374,33 +389,28 @@ const styles = StyleSheet.create({
     },
     inputDate:{
         marginTop: 2,
-        backgroundColor:'#fff',
         fontSize: 21
     },
     inputAdministration:{
-        backgroundColor:'#fff',
         marginTop: 30,
         fontSize: 21
     },
     inputCure:{
         width: 200,
         marginRight: 3,
-        backgroundColor:'#fff',
         fontSize: 21
     },
     inputFinCure:{
-        backgroundColor:'#fff',
         fontSize: 21
     },
     inputFrequence:{
         width: 200,
-        backgroundColor:'#fff',
         fontSize: 21
     },
     picker:{
         width: 100,
         height: 50,
-        backgroundColor:'#fff'
+        paddingTop: 75
     },
     txtCure:{
         fontStyle: 'italic',
@@ -424,7 +434,7 @@ const styles = StyleSheet.create({
     },
     txtTitre:{
         textAlign:'center',
-        color:'#fff',
+        color:'#000',
         fontSize: 26
     },
     valeurPerfs:{
@@ -458,4 +468,47 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    input:{
+        color: '#000',
+        backgroundColor: '#fff',
+        height: 50,
+        borderRadius: 10,
+        marginTop : width*0.025,
+        borderStyle: 'solid',
+        borderColor: '#B9B9B9',
+        borderWidth: 1,
+        paddingLeft: 15
+    },
+    inputDuration:{
+        width: width/2,
+        color: '#000',
+        backgroundColor: '#fff',
+        height: 50,
+        borderRadius: 10,
+        marginTop : width*0.025,
+        borderStyle: 'solid',
+        borderColor: '#B9B9B9',
+        borderWidth: 1,
+        paddingLeft: 15
+    },
+    bouton:{
+        height: 50,
+        justifyContent: 'center',
+        borderRadius: 8,
+        backgroundColor: Couleurs.header.background,
+        marginTop : width*0.05
+    },
+    txtBouton:{
+        textAlign: 'center',
+        fontSize: 14,
+        color: Couleurs.mainColors.orange
+    },
+    durationView: {
+        flexDirection: 'row',
+        marginBottom: -10
+    },
+    dpw: {
+        paddingTop: 30
+    }
+
 });

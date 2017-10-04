@@ -53,6 +53,10 @@ export default class ListeBesoins extends Component {
         super(props);
 
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+        this.props.navigator.setStyle({
+            navBarBackgroundColor: Couleurs.header.background,
+            navBarTextColor: Couleurs.header.title
+        })
 
         this.state = {
             data: [
@@ -110,7 +114,11 @@ export default class ListeBesoins extends Component {
     }
 
     affichageAjoutPatient() {
-        return (<SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {top : 50}]} onPress={this._ajoutBesoin.bind(this)}/>);
+        return (<SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {top : 10}]} onPress={this._ajoutBesoin.bind(this)}/>);
+    }
+
+    affichageRecherche(){
+        return (<SimpleLineIcons name="magnifier" style={[styles.loupe, {top : 10}]}/>);
     }
 
     onNavigatorEvent(event){
@@ -123,7 +131,6 @@ export default class ListeBesoins extends Component {
                 this.recherche(payload);
             }
         }
-
     }
 
     recherche(text) {
@@ -202,12 +209,12 @@ export default class ListeBesoins extends Component {
             <TouchableOpacity  onPress={() => {this._choixBesoin(item)}}>
                 <View style={styles.title}>
                     <Text style={styles.titleText}>
-                        Titre : {item.titre}
+                        Title : {item.titre}
                     </Text>
                 </View>
                 <View style={styles.statusAndDate}>
                     <Text style={styles.statusText}>
-                        Statut : {item.statut}
+                        Status : {item.statut}
                     </Text>
                     <Text style={styles.dateText}>
                         Date : {item.date}
@@ -221,7 +228,7 @@ export default class ListeBesoins extends Component {
     EcranListe(){
         return (
             <View style={styles.subHeader}>
-                <Navbar/>
+                <Navbar style={styles.navbar}/>
                 <ScrollView style={styles.container} refreshControl={
                             <RefreshControl
                                 refreshing={this.state.refreshing}
@@ -236,7 +243,9 @@ export default class ListeBesoins extends Component {
                         keyExtractor={(item) => item.titre}
                     />
                 </ScrollView>
+                {this.affichageRecherche()}
                 {this.affichageAjoutPatient()}
+
 
             </View>
         );
@@ -282,7 +291,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right : 15,
         backgroundColor: 'transparent',
-        color: '#000',
+        color: Couleurs.header.title,
         fontSize: 40
     },
 
@@ -331,7 +340,17 @@ const styles = StyleSheet.create({
         backgroundColor: Couleurs.list.background,
         borderBottomWidth: 1,
         borderBottomColor: Couleurs.list.border,
-        height: 80
+    },
+    loupe: {
+        position: 'absolute',
+        right : 75,
+        backgroundColor: 'transparent',
+        color: Couleurs.header.title,
+        fontSize: 40
+    },
+    navbar:{
+        backgroundColor: Couleurs.list.background,
+        color: Couleurs.header.title
     }
 
 });

@@ -3,13 +3,16 @@ import {
     Keyboard,
     StyleSheet,
     TextInput,
-    View
+    View,
+    Dimensions
 } from 'react-native';
 
 import { Navigation } from 'react-native-navigation';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import PropTypes from 'prop-types';
 import Couleurs from '../../scripts/Couleurs';
+
+var width = Dimensions.get('window').width;
 
 export default class RecherchePatient extends Component {
 
@@ -29,8 +32,8 @@ export default class RecherchePatient extends Component {
                             payload: text
                         });
                     }}
-                    placeholder='Rechercher'
-                    placeholderTextColor={Couleurs.noir}
+                    placeholder='Search'
+                    placeholderTextColor={Couleurs.header.title}
                     selectionColor={Couleurs.bleuClair}
                     autoCorrect={false}
                     returnKeyType={'done'}
@@ -39,7 +42,6 @@ export default class RecherchePatient extends Component {
                         Keyboard.dismiss();
                     }}
                 />
-                <SimpleLineIcons name="magnifier" style={styles.loupe} color={Couleurs.placeholder} />
             </View>
         );
     }
@@ -55,18 +57,21 @@ const styles = StyleSheet.create({
         height: 44,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        backgroundColor: Couleurs.primaire
+        backgroundColor: Couleurs.header.background,
+        height: 60
     },
     texte: {
         flex: 1,
         paddingLeft: 25,
         backgroundColor: 'transparent',
-        color: Couleurs.noir
+        color: Couleurs.header.title,
+        width: width/5*3,
+        fontSize: 18,
     },
     loupe: {
         position: 'absolute',
         top: 13,
-        fontSize: 16,
-        color: Couleurs.blanc
+        fontSize: 18,
+        color: Couleurs.header.title
     },
 });

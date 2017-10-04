@@ -86,24 +86,27 @@ export default class Connexion extends Component {
                 />
                 <TouchableOpacity style={styles.bouton}
                 onPress={this._handlePress.bind(this)}>
-                    {this.state.connexion ? <ActivityIndicator color={Couleurs.mainColors.black}/> : <Text style={styles.txtBouton}>Connect</Text>}
+                    {this.state.connexion ? <ActivityIndicator color={Couleurs.mainColors.black}/> : <Text ref={'textButton'} style={styles.txtBouton}>Connect</Text>}
                 </TouchableOpacity>
             </View>
         );
     }
 
     _handlePress(){
-        if (!this.state.connexion){
-            ws.connexion(this.state.mdp, () => {
-                /*this.props.navigator.resetTo({
-                    screen: 'SA.ListeBesoins'
-                })*/
-                alert('hello')
-            }, (data) => {
-                alert(data.message);
-            });
-            this.setState({connexion : true})
+        if(this.state.visibleCheckEmail) {
+            if (!this.state.connexion) {
+                ws.connexion(this.state.mdp, () => {
+                    /*this.props.navigator.resetTo({
+                        screen: 'SA.ListeBesoins'
+                    })*/
+                    alert('hello')
+                }, (data) => {
+                    alert(data.message);
+                });
+                this.setState({connexion: true})
+            }
         }
+
         this.props.navigator.resetTo({
             screen: 'SA.ListeBesoins'
         })
