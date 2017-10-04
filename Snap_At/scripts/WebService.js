@@ -4,7 +4,6 @@
 import {
     AsyncStorage,
     Platform,
-    PushNotificationIOS,
     Networking
 } from 'react-native';
 

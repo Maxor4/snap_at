@@ -11,6 +11,7 @@
     "react-native": "0.48.4",
     "react-native-navigation": "^1.1.235",
     "react-native-swipeable": "^0.6.0",
+    "react-native-swipeout": "^2.2.2",
     "react-native-vector-icons": "^4.4.0"
   },
   "devDependencies": {

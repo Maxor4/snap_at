@@ -5,6 +5,7 @@ import {
     AsyncStorage,
     Dimensions,
     FlatList,
+    RefreshControl,
     ScrollView,
     StyleSheet,
     Text,
@@ -13,8 +14,9 @@ import {
     View
 } from 'react-native';
 
-import Swipeable from 'react-native-swipeable';
 import { Navigation } from 'react-native-navigation';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import Swipeout from 'react-native-swipeout';
 
 import Couleurs from '../scripts/Couleurs';
 import {ws} from '../index.js'
@@ -52,29 +54,29 @@ export default class ListeBesoins extends Component {
                 {titre: 'hello', date:'3 avril', statut: 'validé'},
                 {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
                 {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'},
-                {titre: 'hello', date:'3 avril', statut: 'validé'},
-                {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
-                {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'},
-                {titre: 'hello', date:'3 avril', statut: 'validé'},
-                {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
-                {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'},
-                {titre: 'hello', date:'3 avril', statut: 'validé'},
-                {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
-                {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'},
-                {titre: 'hello', date:'3 avril', statut: 'validé'},
-                {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
-                {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'}],
+                {titre: 'sdfg', date:'3 avril', statut: 'validé'},
+                {titre: 'gfds', date:'5 aout', statut: 'refusé'},
+                {titre: 'gdfgsdf', date:'24 janvaier', statut: 'En attente'},
+                {titre: 'fgsdfgsd', date:'3 avril', statut: 'validé'},
+                {titre: 'sdfgsdf', date:'5 aout', statut: 'refusé'},
+                {titre: 'gfdg', date:'24 janvaier', statut: 'En attente'},
+                {titre: 'gfder', date:'3 avril', statut: 'validé'},
+                {titre: 'grtyth', date:'5 aout', statut: 'refusé'},
+                {titre: 'sdfgrt', date:'24 janvaier', statut: 'En attente'},
+                {titre: 'helyuikhlo', date:'3 avril', statut: 'validé'},
+                {titre: 'oihouil', date:'5 aout', statut: 'refusé'},
+                {titre: 'mpoiu', date:'24 janvaier', statut: 'En attente'}],
 
             press: true,
             refreshing: true,
-            liste: false
+            liste: true
 
         };
     }
 
     componentDidMount()
     {
-        this.refreshListe();
+       // this.refreshListe();
     }
 
 
@@ -115,10 +117,13 @@ export default class ListeBesoins extends Component {
         });
         ws.getListeBesoins((data) => {
             this.setState({
-                dataSource: this.ds.cloneWithRows(ws.besoins),
+                data: ws.besoins,
                 refreshing: false
             })
         });
+        this.setState({
+            refreshing: false
+        })
     }
 
 
@@ -228,11 +233,9 @@ export default class ListeBesoins extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#F5FCFF',
     },
-    ajoutBBesoin: {
+    ajoutBesoin: {
         position: 'absolute',
         right : 15,
         backgroundColor: 'transparent',
@@ -254,7 +257,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#FF8929',
         marginLeft: 10,
-        marginBottom: width/4,
+        marginBottom: 10,
     },
     dateText: {
         width: width/2,
@@ -267,14 +270,13 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontSize: 16,
         color: '#FF8929',
-        marginTop: width/4,
+        marginTop: 10,
         marginLeft: 10
     },
     touchable:{
-        height: 70,
+        height: 100,
         borderRadius: 8,
         backgroundColor: '#2F3649',
-        marginTop : width*0.05
     }
 
 });
