@@ -20,9 +20,11 @@ import Swipeout from 'react-native-swipeout';
 
 import Couleurs from '../scripts/Couleurs';
 import {ws} from '../index.js'
+import Navbar from './component/Navbar.js'
 
 var width = Dimensions.get('window').width,
     timeoutBouton= 2000;
+
 
 function arrayFromHashes(first, second) {
     let temp = [],
@@ -42,17 +44,15 @@ function arrayFromHashes(first, second) {
 
 export default class ListeBesoins extends Component {
 
+    static navigatorStyle={
+        navBarCustomView:'SA.Navbar.RechercheBesoin',
+        navBarHidden: true
+    };
+
     constructor(props) {
         super(props);
 
-        this.props.navigator.setTitle({
-            title: "Needs" // the new title of the screen as appears in the nav bar
-        });
-        this.props.navigator.setStyle({
-            navBarTextColor: Couleurs.header.title,
-            navBarBackgroundColor: Couleurs.header.background,
-            navBarTitleTextCentered: true
-        })
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 
         this.state = {
             data: [
@@ -73,21 +73,39 @@ export default class ListeBesoins extends Component {
                 {titre: 'mpoiu', date:'30/12/1995', statut: 'En attente'}],
 
             press: true,
-            refreshing: true,
-            liste: true
+            refreshing: false,
+            liste: true,
+
+            dataSet:[
+                {titre: 'Proposition de contrat CGI refonte SI', date:'30/12/1995', statut: 'Validated'},
+        {titre: 'konnichiwa', date:'30/12/1995', statut: 'refusé'},
+        {titre: 'bonjouro', date:'30/12/1995', statut: 'En attente'},
+        {titre: 'sdfg', date:'30/12/1995', statut: 'validé'},
+        {titre: 'gfds', date:'30/12/1995', statut: 'refusé'},
+        {titre: 'gdfgsdf', date:'30/12/1995', statut: 'En attente'},
+        {titre: 'fgsdfgsd', date:'30/12/1995', statut: 'validé'},
+        {titre: 'sdfgsdf', date:'30/12/1995', statut: 'refusé'},
+        {titre: 'gfdg', date:'30/12/1995', statut: 'En attente'},
+        {titre: 'gfder', date:'30/12/1995', statut: 'validé'},
+        {titre: 'grtyth', date:'30/12/1995', statut: 'refusé'},
+        {titre: 'sdfgrt', date:'30/12/1995', statut: 'En attente'},
+        {titre: 'helyuikhlo', date:'30/12/1995', statut: 'validé'},
+        {titre: 'oihouil', date:'30/12/1995', statut: 'refusé'},
+        {titre: 'mpoiu', date:'30/12/1995', statut: 'En attente'}]
 
         };
+
     }
 
     componentDidMount()
     {
        // this.refreshListe();
-    }
+     }
 
 
     _ajoutBesoin() {
         this.props.navigator.push({
-            screen: 'SA.FicheBesoins'
+            screen: 'SA.FicheBesoin'
         })
     }
 
@@ -95,21 +113,32 @@ export default class ListeBesoins extends Component {
         return (<SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {top : 20}]} onPress={this._ajoutBesoin.bind(this)}/>);
     }
 
-    /*affichageSuppressionBesoin(){
-        return (<SimpleLineIcons name="trash" style={[styles.suppressionBesoin, {top : 20}]}/>);
-    }*/
+    onNavigatorEvent(event){
+        // handle a deep link
+        if (event.type == 'DeepLink') {
+            const parts = event.link.split('/'); // Link parts
+            const payload = event.payload; // (optional) The payload
+
+            if (parts[0] == 'recherchePatient') {
+                this.recherche(payload);
+            }
+        }
+
+    }
 
     recherche(text) {
-        let temp = arrayFromHashes(ws.besoins),
-            besoinFilter = ws.besoins;
+        /*let temp = arrayFromHashes(ws.besoins),
+            besoinFilter = ws.besoins;*/
+        let temp = this.state.dataSet,
+            besoinFilter = this.state.dataSet;
 
         if(typeof text == 'string' && text.length > 0){
-            besoinFilter = {}
+            besoinFilter = []
             let regex = new RegExp(text.toLowerCase(), 'i');
 
             for (let key in temp) {
                 if(temp[key].titre.toLowerCase().match(regex)) {
-                    besoinFilter[key] = temp[key];
+                    besoinFilter.push(temp[key]);
                 }
             }
         }
@@ -169,7 +198,7 @@ export default class ListeBesoins extends Component {
             itemSelect = null;
 
         return(
-        <Swipeout right={swipeoutBtns} autoClose={true} onOpen={() => {itemSelect = item }} buttonWidth={70} backgroundColor={'white'} style={styles.touchable}>
+        <Swipeout right={swipeoutBtns} autoClose={true} onOpen={() => {itemSelect = item }} buttonWidth={70} style={styles.touchable}>
             <TouchableOpacity  onPress={() => {this._choixBesoin(item)}}>
                 <View style={styles.title}>
                     <Text style={styles.titleText}>
@@ -192,13 +221,14 @@ export default class ListeBesoins extends Component {
     EcranListe(){
         return (
             <View style={styles.subHeader}>
-                <View style={styles.subSubHeader}></View>
+                <Navbar/>
                 <ScrollView style={styles.container} refreshControl={
                             <RefreshControl
                                 refreshing={this.state.refreshing}
                                 onRefresh={this.refreshListe.bind(this)}
                                 enabled={true}/>
                         }>
+                    <View style={styles.subSubHeader}></View>
                     <FlatList
                         data={this.state.data}
                         extraData={this.state}

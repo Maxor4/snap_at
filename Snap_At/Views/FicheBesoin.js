@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 
 import { Navigation } from 'react-native-navigation';
+import Couleurs from '../scripts/Couleurs';
 
 import {ws} from '../index.js'
 
