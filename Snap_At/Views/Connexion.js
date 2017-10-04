@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import {
+    ActivityIndicator,
     Dimensions,
     StyleSheet,
     Text,
@@ -15,8 +16,9 @@ import {
 } from 'react-native';
 
 import { Navigation } from 'react-native-navigation';
-//import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import Couleurs from '../scripts/Couleurs';
 import {ws} from '../index.js'
 
 var width = Dimensions.get('window').width;
@@ -29,7 +31,7 @@ export default class Connexion extends Component {
         this.state = {
             email: '',
             passwd: '',
-            visibleCheckEmail: this.validateEmail(email),
+            visibleCheckEmail: false,
             connexion: false
         };
     }
@@ -58,12 +60,15 @@ export default class Connexion extends Component {
                     placeholder={'Email'}
                     underlineColorAndroid={'transparent'}
                     onChangeText={(text) => {
-                            this.setState({email: text})
+                            this.setState({
+                            email: text,
+                            visibleCheckEmail: this.validateEmail(text)
+                            });
                         }}
                     onSubmitEditing={this.focusNextField.bind(this)}
                     returnKeyType={'next'}
                 />
-                    //{this.state.visibleCheckEmail ? <Icon style={styles.checkEmail} name="check" size={30} /> : null}
+                    {this.state.visibleCheckEmail ? <Icon name="check" size={30} /> : null}
                     </View>
                 <TextInput
                     ref={'passwd'}
@@ -89,14 +94,18 @@ export default class Connexion extends Component {
     _handlePress(){
         if (!this.state.connexion){
             ws.connexion(this.state.mdp, () => {
-                this.props.navigator.resetTo({
+                /*this.props.navigator.resetTo({
                     screen: 'SA.ListeBesoins'
-                })
+                })*/
+                alert('hello')
             }, (data) => {
                 alert(data.message);
             });
             this.setState({connexion : true})
         }
+        this.props.navigator.resetTo({
+            screen: 'SA.ListeBesoins'
+        })
     }
 }
 

@@ -5,6 +5,8 @@ import {
 
 import { Navigation } from 'react-native-navigation';
 
+import WebService from './scripts/WebService';
+
 import Connexion from './Views/Connexion'
 import ListeBesoins from './Views/ListeBesoins'
 
@@ -23,7 +25,7 @@ export default class Index extends Component {
     constructor(props) {
         super(props);
 
-        ws.getToken((token) => {
+        /*ws.getToken((token) => {
             if(token.length > 0) {
                 ws.isConnecte((data) => {
                     this.startAppConnecte();
@@ -34,7 +36,7 @@ export default class Index extends Component {
             else {
                 this.startApp();
             }
-        });
+        });*/
         this.startApp()
 
     }
