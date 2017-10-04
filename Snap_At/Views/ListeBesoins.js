@@ -110,7 +110,7 @@ export default class ListeBesoins extends Component {
     }
 
     affichageAjoutPatient() {
-        return (<SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {top : 20}]} onPress={this._ajoutBesoin.bind(this)}/>);
+        return (<SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {top : 50}]} onPress={this._ajoutBesoin.bind(this)}/>);
     }
 
     onNavigatorEvent(event){

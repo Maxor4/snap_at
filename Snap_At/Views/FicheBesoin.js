@@ -46,8 +46,9 @@ export default class FicheBesoin extends Component {
 
     populatePicker(){
         for (let i= 1; i<=7; i++ ){
+            let a = JSON.stringify(i)
             return(
-                <Picker.Item label=i value=i />
+                <Picker.Item label={a} value={i} />
             )
         }
     }
@@ -300,7 +301,7 @@ export default class FicheBesoin extends Component {
                             {this.populatePicker()}
                         </Picker>
 
-                        <Text style={{marginLEft: 10}}>days/week</Text>
+                        <Text style={{marginLeft: 10}}>days/week</Text>
 
                     </View>
                     <TextInput style={styles.inputAdministration}
