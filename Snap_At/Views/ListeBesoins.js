@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import {
+    ActivityIndicator,
     AsyncStorage,
     Dimensions,
     FlatList,
@@ -15,6 +16,7 @@ import {
 import Swipeable from 'react-native-swipeable';
 import { Navigation } from 'react-native-navigation';
 
+import Couleurs from '../scripts/Couleurs';
 import {ws} from '../index.js'
 
 var width = Dimensions.get('window').width,

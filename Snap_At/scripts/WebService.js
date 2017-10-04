@@ -9,14 +9,13 @@ import {
 } from 'react-native';
 
 import Config from '../config/Config.js';
-import Stockage from '../scripts/Stockage';
 
 var dateFormat = require('dateformat');
 
 function WebService() {
     this.serveur = Config.serveur;
-    this.identifierStorage = '@NxStorage';
-    this.email = 'm.petrini@hecone.fr';
+    this.identifierStorage = '@SaStorage';
+    this.email = 'test@test.fr';
 
     this.token = '';
     this.navigator = null;
@@ -177,9 +176,6 @@ WebService.prototype.connexion = function (mdp, callback, fallback) {
             'lastname' : data.lastname,
         };
         this.setReglages(this.reglages).setToken(data.token);
-        AsyncStorage.removeItem(Stockage.identifierStorage+":messages", () => {
-            typeof callback === 'function' ? callback() : null;
-        }).done();
 
     }, (data) => {
         fallback(data);
