@@ -51,7 +51,7 @@ export default class Connexion extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.welcomeMessage}>Welcome to SNAP-AT. {"\n"} Please, authenticate yourself.</Text>
-                <View>
+                <View style={styles.mailAdress}>
                     <TextInput
                     ref={'email'}
                     style={styles.input}
@@ -68,7 +68,7 @@ export default class Connexion extends Component {
                     onSubmitEditing={this.focusNextField.bind(this)}
                     returnKeyType={'next'}
                 />
-                    {this.state.visibleCheckEmail ? <Icon name="check" size={30} /> : null}
+                    {this.state.visibleCheckEmail ? <Icon style={styles.emailIcon} name="check" size={30} /> : null}
                     </View>
                 <TextInput
                     ref={'passwd'}
@@ -77,6 +77,7 @@ export default class Connexion extends Component {
                     keyboardType={'default'}
                     placeholder={'Password'}
                     underlineColorAndroid={'transparent'}
+                    secureTextEntry={true}
                     onChangeText={(text) => {
                         this.setState({psswd: text})
                     }}
@@ -85,7 +86,7 @@ export default class Connexion extends Component {
                 />
                 <TouchableOpacity style={styles.bouton}
                 onPress={this._handlePress.bind(this)}>
-                    {this.state.connexion ? <ActivityIndicator color={Couleurs.bleuAccueil}/> : <Text style={styles.texteConnexion}>Se connecter</Text>}
+                    {this.state.connexion ? <ActivityIndicator color={Couleurs.mainColors.black}/> : <Text style={styles.txtBouton}>Connect</Text>}
                 </TouchableOpacity>
             </View>
         );
@@ -121,13 +122,13 @@ const styles = StyleSheet.create({
         width: width*(2/3),
         justifyContent: 'center',
         borderRadius: 8,
-        backgroundColor: '#2F3649',
+        backgroundColor: Couleurs.mainColors.black,
         marginTop : width*0.05
     },
     txtBouton:{
         textAlign: 'center',
         fontSize: 14,
-        color: '#FF8929'
+        color: Couleurs.mainColors.orange
     },
     input: {
         color: '#000',
@@ -145,7 +146,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 20,
         color: '#FF8929',
-        marginBottom: width*0.1,
-        marginTop: height*(-0.1)
+        marginBottom: width * 0.1,
+        marginTop: height * (-0.1)
+    },
+    mailAdress: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    emailIcon: {
+        position: 'absolute',
+        right: 5,
+        top: 20
     }
 });

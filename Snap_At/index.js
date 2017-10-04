@@ -10,6 +10,7 @@ import WebService from './scripts/WebService';
 import Connexion from './Views/Connexion'
 import ListeBesoins from './Views/ListeBesoins'
 import FicheBesoin from './Views/FicheBesoin'
+import Couleurs from './scripts/Couleurs.js'
 
 
 export function registerScreens() {
@@ -51,8 +52,8 @@ export default class Index extends Component {
             screen: 'SA.Connexion', // unique ID registered with Navigation.registerScreen
             title: 'Authentication', // title of the screen as appears in the nav bar (optional)
             navigatorStyle: {
-                navBarTextColor: '#FF8929',
-                navBarBackgroundColor: '#2F3649',
+                navBarTextColor: Couleurs.header.title,
+                navBarBackgroundColor: Couleurs.header.background,
                 navBarTitleTextCentered: true
             }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
             navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)

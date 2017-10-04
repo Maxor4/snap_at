@@ -46,26 +46,31 @@ export default class ListeBesoins extends Component {
         super(props);
 
         this.props.navigator.setTitle({
-            title: "Dynamic Title" // the new title of the screen as appears in the nav bar
+            title: "Needs" // the new title of the screen as appears in the nav bar
         });
+        this.props.navigator.setStyle({
+            navBarTextColor: Couleurs.header.title,
+            navBarBackgroundColor: Couleurs.header.background,
+            navBarTitleTextCentered: true
+        })
 
         this.state = {
             data: [
-                {titre: 'hello', date:'3 avril', statut: 'validé'},
-                {titre: 'konnichiwa', date:'5 aout', statut: 'refusé'},
-                {titre: 'bonjouro', date:'24 janvaier', statut: 'En attente'},
-                {titre: 'sdfg', date:'3 avril', statut: 'validé'},
-                {titre: 'gfds', date:'5 aout', statut: 'refusé'},
-                {titre: 'gdfgsdf', date:'24 janvaier', statut: 'En attente'},
-                {titre: 'fgsdfgsd', date:'3 avril', statut: 'validé'},
-                {titre: 'sdfgsdf', date:'5 aout', statut: 'refusé'},
-                {titre: 'gfdg', date:'24 janvaier', statut: 'En attente'},
-                {titre: 'gfder', date:'3 avril', statut: 'validé'},
-                {titre: 'grtyth', date:'5 aout', statut: 'refusé'},
-                {titre: 'sdfgrt', date:'24 janvaier', statut: 'En attente'},
-                {titre: 'helyuikhlo', date:'3 avril', statut: 'validé'},
-                {titre: 'oihouil', date:'5 aout', statut: 'refusé'},
-                {titre: 'mpoiu', date:'24 janvaier', statut: 'En attente'}],
+                {titre: 'Proposition de contrat CGI refonte SI', date:'30/12/1995', statut: 'Validated'},
+                {titre: 'konnichiwa', date:'30/12/1995', statut: 'refusé'},
+                {titre: 'bonjouro', date:'30/12/1995', statut: 'En attente'},
+                {titre: 'sdfg', date:'30/12/1995', statut: 'validé'},
+                {titre: 'gfds', date:'30/12/1995', statut: 'refusé'},
+                {titre: 'gdfgsdf', date:'30/12/1995', statut: 'En attente'},
+                {titre: 'fgsdfgsd', date:'30/12/1995', statut: 'validé'},
+                {titre: 'sdfgsdf', date:'30/12/1995', statut: 'refusé'},
+                {titre: 'gfdg', date:'30/12/1995', statut: 'En attente'},
+                {titre: 'gfder', date:'30/12/1995', statut: 'validé'},
+                {titre: 'grtyth', date:'30/12/1995', statut: 'refusé'},
+                {titre: 'sdfgrt', date:'30/12/1995', statut: 'En attente'},
+                {titre: 'helyuikhlo', date:'30/12/1995', statut: 'validé'},
+                {titre: 'oihouil', date:'30/12/1995', statut: 'refusé'},
+                {titre: 'mpoiu', date:'30/12/1995', statut: 'En attente'}],
 
             press: true,
             refreshing: true,
@@ -87,8 +92,12 @@ export default class ListeBesoins extends Component {
     }
 
     affichageAjoutPatient() {
-        return (<SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {bottom : 15}]} onPress={this._ajoutBesoin.bind(this)}/>);
+        return (<SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {top : 20}]} onPress={this._ajoutBesoin.bind(this)}/>);
     }
+
+    /*affichageSuppressionBesoin(){
+        return (<SimpleLineIcons name="trash" style={[styles.suppressionBesoin, {top : 20}]}/>);
+    }*/
 
     recherche(text) {
         let temp = arrayFromHashes(ws.besoins),
@@ -149,7 +158,9 @@ export default class ListeBesoins extends Component {
         let swipeoutBtns = [
                 {
                     text: 'Delete',
-                    backgroundColor: 'blue',
+                    backgroundColor: Couleurs.mainColors.black,
+                    color: Couleurs.mainColors.orange,
+                    height: 100,
                     onPress: () => {
                         this.deleteBesoin(itemSelect)
                     }
@@ -158,19 +169,19 @@ export default class ListeBesoins extends Component {
             itemSelect = null;
 
         return(
-        <Swipeout right={swipeoutBtns} autoClose={true} onOpen={() => {itemSelect = item }} buttonWidth={70} backgroundColor={'white'} style={{borderBottomWidth: 1}}>
-            <TouchableOpacity style={styles.touchable} onPress={() => {this._choixBesoin(item)}}>
-                <View style={styles.titleAndDate}>
+        <Swipeout right={swipeoutBtns} autoClose={true} onOpen={() => {itemSelect = item }} buttonWidth={70} backgroundColor={'white'} style={styles.touchable}>
+            <TouchableOpacity  onPress={() => {this._choixBesoin(item)}}>
+                <View style={styles.title}>
                     <Text style={styles.titleText}>
                         Titre : {item.titre}
                     </Text>
-                    <Text style={styles.dateText}>
-                        Date : {item.date}
-                    </Text>
                 </View>
-                <View style={styles.status}>
+                <View style={styles.statusAndDate}>
                     <Text style={styles.statusText}>
                         Statut : {item.statut}
+                    </Text>
+                    <Text style={styles.dateText}>
+                        Date : {item.date}
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -180,21 +191,24 @@ export default class ListeBesoins extends Component {
 
     EcranListe(){
         return (
-            <ScrollView style={styles.container} refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this.refreshListe.bind(this)}
-                            enabled={true}/>
-                    }>
-
-                <FlatList
-                    data={this.state.data}
-                    extraData={this.state}
-                    renderItem={({item}) => this._renderItem(item)}
-                    keyExtractor={(item) => item.titre}
-                />
+            <View style={styles.subHeader}>
+                <View style={styles.subSubHeader}></View>
+                <ScrollView style={styles.container} refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={this.refreshListe.bind(this)}
+                                enabled={true}/>
+                        }>
+                    <FlatList
+                        data={this.state.data}
+                        extraData={this.state}
+                        renderItem={({item}) => this._renderItem(item)}
+                        keyExtractor={(item) => item.titre}
+                    />
+                </ScrollView>
                 {this.affichageAjoutPatient()}
-            </ScrollView>
+
+            </View>
         );
     }
 
@@ -232,51 +246,62 @@ export default class ListeBesoins extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#F5FCFF',
+        backgroundColor: Couleurs.list.background,
     },
     ajoutBesoin: {
         position: 'absolute',
         right : 15,
         backgroundColor: 'transparent',
         color: '#000',
-        fontSize: 60
+        fontSize: 40
     },
 
     flatList: {
-        backgroundColor: '#2F3649'
+        backgroundColor: Couleurs.list.background,
     },
-    titleAndDate: {
-        flexDirection: 'row'
+    title: {
+        display: 'flex',
+        marginBottom: 15
     },
-    status: {
-        display: 'flex'
-
+    statusAndDate: {
+        flexDirection: 'row',
+        width: width
     },
     statusText: {
-        fontSize: 16,
-        color: '#FF8929',
+        fontSize: 18,
+        color: '#000000',
         marginLeft: 10,
         marginBottom: 10,
     },
     dateText: {
-        width: width/2,
         textAlign: 'right',
-        fontSize: 16,
-        color: '#FF8929'
+        fontSize: 18,
+        color: '#000000',
+        position: 'absolute',
+        right: 6
     },
     titleText: {
-        width: width/2,
         textAlign: 'left',
-        fontSize: 16,
-        color: '#FF8929',
+        fontSize: 18,
+        color: '#000000',
         marginTop: 10,
         marginLeft: 10
     },
     touchable:{
-        height: 100,
-        borderRadius: 8,
-        backgroundColor: '#2F3649',
+        height: 80,
+        width: width,
+        backgroundColor: Couleurs.list.background,
+        borderBottomWidth: 1,
+        borderBottomColor: Couleurs.list.border,
+    },
+    subHeader: {
+        backgroundColor: Couleurs.list.background
+    },
+    subSubHeader: {
+        backgroundColor: Couleurs.list.background,
+        borderBottomWidth: 1,
+        borderBottomColor: Couleurs.list.border,
+        height: 80
     }
 
 });
