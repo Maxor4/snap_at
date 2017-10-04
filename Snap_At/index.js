@@ -9,9 +9,9 @@ import WebService from './scripts/WebService';
 
 import Connexion from './Views/Connexion'
 import ListeBesoins from './Views/ListeBesoins'
+import FicheBesoin from './Views/FicheBesoin'
 import Couleurs from './scripts/Couleurs.js'
 import Navbar from './Views/component/Navbar.js'
-import FicheBesoin from './Views/FicheBesoin.js'
 
 
 export function registerScreens() {
