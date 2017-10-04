@@ -228,12 +228,14 @@ export default class ListeBesoins extends Component {
 
     }
 
-    _choixBesoin(id_besoin){
+    _choixBesoin(item){
         if (this.state.press) {
-            Navigation.handleDeepLink({
-                link: 'Patient',
-                payload : JSON.stringify(id_besoin)
-            })
+            this.props.navigator.push({
+                screen: 'SA.Besoin',
+                passProps:{
+                   item : item
+                }
+            });
             this.setState({press: false});
             setTimeout(() => {
                 this.setState({
