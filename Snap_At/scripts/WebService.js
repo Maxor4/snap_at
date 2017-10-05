@@ -202,7 +202,6 @@ WebService.prototype.getListeClients = function (callback) {
 WebService.prototype.getListeCommerciaux = function (callback) {
 
     this.request(this.serveur+'itc/mail','GET', null, (data) => {
-        alert(data);
         this.setCommerciaux(data);
         callback(data);
     })
@@ -214,18 +213,32 @@ WebService.prototype.getListeCommerciaux = function (callback) {
  */
 
 
-WebService.prototype.creationBesoin = function(nom, idAgenceAddress, prenom, tel, callback, fallback) {
+WebService.prototype.creationBesoin = function(besoin, callback, fallback) {
     let form = new FormData();
-    form.append('nom', nom);
-    form.append('idAgenceAddress', idAgenceAddress);
-    form.append('prenom', prenom);
-    form.append('tel', tel);
 
-    this.request(this.serveur+'Besoins/new', 'POST', form, (data) =>
+        form.append('createur', this.id);
+        form.append('titre:', besoin.titre);
+        form.append('contactcli:', besoin.contactcli);
+        form.append('client', besoin.client);
+        form.append('datecreation', besoin.datecreation);
+        form.append('description', besoin.description);
+        form.append('succesun', besoin.succesun);
+        form.append('succesdeux', besoin.succesdeux);
+        form.append('succestrois', besoin.succestrois);
+        form.append('dureem', besoin.dureem);
+        form.append('dureej', besoin.dureej);
+        form.append('datedebuttard', besoin.datedebuttard);
+        form.append('nomconsun', besoin.nomconsun);
+        form.append('nomconsdeux', besoin.nomconsdeux);
+        form.append('nomconstrois', besoin.nomconstrois);
+        form.append('nomconsquatre', besoin.nomconsquatre);
+        form.append('nomconscinq', besoin.nomconscinq);
+        form.append('address', besoin.address);
+        form.append('zipCode', besoin.zipCode);
+        form.append('tarif', besoin.tarif);
+
+    this.request(this.serveur+'besoin/create', 'POST', form, (data) =>
     {
-        let temp = this.Besoins;
-
-        this.setBesoins(temp);
         callback(data);
     }, function(data) {
         fallback(data);

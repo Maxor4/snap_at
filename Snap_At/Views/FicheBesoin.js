@@ -81,7 +81,7 @@ export default class FicheBesoin extends Component {
             refreshing:true
         });
         ws.getListeClients((data) => {
-            alert(ws.Clients)
+
             this.setState({
                 data: ws.Clients,
                 refreshing: false
@@ -576,36 +576,31 @@ export default class FicheBesoin extends Component {
 
     saveShare(){
         let besoin = {
-            createur: ws.id,
-                titre: this.state.titre,
-                contactcli: this.state.contact,
-                client: this.state.client,
-                datecreation: this.state.datecreation,
+            titre: this.state.titre,
+            contactcli: this.state.contact,
+            client: this.state.client,
+            datecreation: this.state.datecreation,
             description: this.state.description,
             succesun: this.state.succesun,
             succesdeux: this.state.succesdeux,
             succestrois: this.state.succestrois,
-                dureem: this.state.dureem,
-                dureej: this.state.dureej,
-                datedebuttard: this.state.datedebuttard,
+            dureem: this.state.dureem,
+            dureej: this.state.dureej,
+            datedebuttard: this.state.datedebuttard,
             nomconsun: this.state.nomconsun,
             nomconsdeux: this.state.nomconsdeux,
             nomconstrois: this.state.nomconstrois,
             nomconsquatre: this.state.nomconsquatre,
             nomconscinq: this.state.nomconscinq,
-                address: this.state.address,
-                zipCode: this.state.zipCode,
-                tarif: this.state.tarif,
+            address: this.state.address,
+            zipCode: this.state.zipCode,
+            tarif: this.state.tarif,
         };
 
-        /*ws.creationBesoin(besoin, () => {
+        ws.creationBesoin(besoin, () => {
             this.props.navigator.showModal({
                 screen: 'SA.SelectEmails'
             })
-        })*/
-
-        this.props.navigator.showModal({
-            screen: 'SA.SelectEmails'
         })
 
     }
