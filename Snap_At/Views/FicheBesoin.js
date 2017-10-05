@@ -12,17 +12,19 @@ import {
     TextInput,
     TouchableOpacity,
     View,
-    findNodeHandle
+    FlatList,
 } from 'react-native';
 
 import { Navigation } from 'react-native-navigation';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Couleurs from '../scripts/Couleurs';
+import Swipeout from 'react-native-swipeout';
 
 import {ws} from '../index.js'
 
 var width = Dimensions.get('window').width,
-    dateFormat = require('dateformat');
+    dateFormat = require('dateformat'),
+    timeoutBouton= 2000;
 
 const dateJour = dateFormat(new Date(), 'dd/mm/yyyy');
 
@@ -34,18 +36,63 @@ export default class FicheBesoin extends Component {
         this.state = {
             titre: '',
             contact: '',
+            showListClient: false,
             client: '',
             date: dateJour,
             showFactors: false,
-            factor: '',
+            factor1: '',
+            factor2: '',
+            factor3: '',
             showConsultants: false,
-            consultant: '',
+            consultant1: '',
+            consultant2: '',
+            consultant3: '',
+            consultant4: '',
+            consultant5: '',
             tempsDuree: null,
             typeDuree: 'Jour',
             dateLatest: null,
             address: '',
             zipCode: '',
             rate: null,
+            text: '',
+            data: [
+                {client: 'Proposition de contrat CGI refonte SI'},
+                {client: 'konnichiwa'},
+                {client: 'bonjouro'},
+                {client: 'sdfg'},
+                {client: 'gfds'},
+                {client: 'gdfgsdf'},
+                {client: 'fgsdfgsd'},
+                {client: 'sdfgsdf'},
+                {client: 'gfdg'},
+                {client: 'gfder'},
+                {client: 'grtyth'},
+                {client: 'sdfgrt'},
+                {client: 'helyuikhlo'},
+                {client: 'oihouil'},
+                {client: 'mpoiu'}],
+
+            press: true,
+            refreshing: false,
+            liste: true,
+
+            dataSet:[
+                {client: 'Proposition de contrat CGI refonte SI'},
+                {client: 'konnichiwa'},
+                {client: 'bonjouro'},
+                {client: 'sdfg'},
+                {client: 'gfds'},
+                {client: 'gdfgsdf'},
+                {client: 'fgsdfgsd'},
+                {client: 'sdfgsdf'},
+                {client: 'gfdg'},
+                {client: 'gfder'},
+                {client: 'grtyth'},
+                {client: 'sdfgrt'},
+                {client: 'helyuikhlo'},
+                {client: 'oihouil'},
+                {client: 'mpoiu'}]
         };
 
         this.props.navigator.setStyle({
@@ -97,44 +144,44 @@ export default class FicheBesoin extends Component {
                         {this.affichageFlecheDropdown()}
                     </TouchableOpacity>
                     <TextInput
-                        style={styles.input}
-                        placeholder="Factor"
-                        value={this.state.factor}
+                        style={styles.subInput}
+                        placeholder="Factor 1"
+                        value={this.state.factor1}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                factor: nom
+                                factor1: nom
                             })
                         }}
                     />
                     <TextInput
-                        style={styles.input}
-                        placeholder="Factor"
-                        value={this.state.factor}
+                        style={styles.subInput}
+                        placeholder="Factor 2"
+                        value={this.state.factor2}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                factor: nom
+                                factor2: nom
                             })
                         }}
                     />
                     <TextInput
-                        style={styles.input}
-                        placeholder="Factor"
-                        value={this.state.factor}
+                        style={styles.subInput}
+                        placeholder="Factor 3"
+                        value={this.state.factor3}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                factor: nom
+                                factor3: nom
                             })
                         }}
                     />
@@ -142,7 +189,6 @@ export default class FicheBesoin extends Component {
             )
         }
     }
-
 
     affichageConsultants(){
         if (!this.state.showConsultants){
@@ -163,72 +209,72 @@ export default class FicheBesoin extends Component {
                         {this.affichageFlecheDropdown()}
                     </TouchableOpacity>
                     <TextInput
-                        style={styles.input}
-                        placeholder="Consultant"
-                        value={this.state.consultant}
+                        style={styles.subInput}
+                        placeholder="Consultant 1"
+                        value={this.state.consultant1}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                consultant: nom
+                                consultant1: nom
                             })
                         }}
                     />
                     <TextInput
-                        style={styles.input}
-                        placeholder="Consultant"
-                        value={this.state.consultant}
+                        style={styles.subInput}
+                        placeholder="Consultant 2"
+                        value={this.state.consultant2}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                consultant: nom
+                                consultant2: nom
                             })
                         }}
                     />
                     <TextInput
-                        style={styles.input}
-                        placeholder="Consultant"
-                        value={this.state.consultant}
+                        style={styles.subInput}
+                        placeholder="Consultant 3"
+                        value={this.state.consultant3}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                consultant: nom
+                                consultant3: nom
                             })
                         }}
                     />
                     <TextInput
-                        style={styles.input}
-                        placeholder="Consultant"
-                        value={this.state.consultant}
+                        style={styles.subInput}
+                        placeholder="Consultant 4"
+                        value={this.state.consultant4}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                consultant: nom
+                                consultant4: nom
                             })
                         }}
                     />
                     <TextInput
-                        style={styles.input}
-                        placeholder="Consultant"
-                        value={this.state.consultant}
+                        style={styles.subInput}
+                        placeholder="Consultant 5"
+                        value={this.state.consultant5}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                consultant: nom
+                                consultant5: nom
                             })
                         }}
                     />
@@ -236,6 +282,153 @@ export default class FicheBesoin extends Component {
             )
         }
     }
+
+    recherche(text) {
+        /*let temp = arrayFromHashes(ws.besoins),
+            besoinFilter = ws.besoins;*/
+        let temp = this.state.dataSet,
+            besoinFilter = this.state.dataSet;
+        let re = /^([a-zA-Z0-9_])*$/;
+        if(!re.test(text)){
+            this.setState({text: text.substring(0, text.length-1)},() => {text = this.state.text;});
+        }else{
+            this.setState({text: text})
+        }
+        if(typeof text === 'string' && text.length > 0){
+            besoinFilter = [];
+            let regex = new RegExp(text.toLowerCase(), 'i');
+
+            for (let key in temp) {
+                if(temp[key].client.toLowerCase().match(regex)) {
+                    besoinFilter.push(temp[key]);
+                }
+            }
+        }
+        this.setState({
+            data: besoinFilter
+        });
+    }
+
+
+
+    displayListClient(){
+        if (!this.state.showListClient) {
+            clientListOff = function(options) {
+                return {
+                    color: '#000',
+                    backgroundColor: '#fff',
+                    height: 50,
+                    borderRadius: 10,
+                    marginTop : width*0.025,
+                    borderStyle: 'solid',
+                    borderColor: '#B9B9B9',
+                    borderWidth: 1,
+                    paddingLeft: 15
+                }
+            }
+            return (
+                <TextInput style={clientListOff()}
+                           placeholder="Client"
+                           ref={'client'}
+                           value={this.state.client}
+                           returnKeyType={'next'}
+                           clearButtonMode={'never'}
+                           keyboardType={'default'}
+                           underlineColorAndroid='transparent'
+                           onFocus={() => {
+                               this.setState({showListClient: !this.state.showListClient})}}
+                           onChangeText={(nom, text) => {
+                               this.setState({
+                                   client: nom
+                               }),
+                                   this.recherche(text)
+                           }}
+                />
+            );
+        }else{
+            clientListOn = function(options) {
+                return {
+                    color: '#000',
+                    backgroundColor: '#fff',
+                    height: 50,
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10,
+                    borderStyle: 'solid',
+                    borderColor: '#B9B9B9',
+                    borderWidth: 1,
+                    paddingLeft: 15,
+                    paddingTop: 15
+                }
+            }
+            return(
+                <View>
+                    <TextInput style={clientListOn()}
+                               placeholder="Client"
+                               value={this.state.client}
+                               returnKeyType={'next'}
+                               clearButtonMode={'never'}
+                               keyboardType={'default'}
+                               underlineColorAndroid='transparent'
+                               onFocus={() => {this.setState({showListClient: this.state.showListClient})}}
+                               onEndEditing={() => {this.setState({showListClient: !this.state.showListClient})}}
+                               onChangeText={(nom) => {
+                                   this.setState({
+                                       client: nom
+                                   }),
+                                       this.recherche(nom)
+                               }}
+                    />
+                    <FlatList
+                        data={this.state.data}
+                        extraData={this.state}
+                        renderItem={({item}) => this._renderItem(item)}
+                        keyExtractor={(item) => item.client}
+                    />
+                </View>
+            );
+        }
+    }
+
+    _choixBesoin(item){
+        if (this.state.press) {
+            this.setState({client: item.client});
+            this.setState({press: false});
+            setTimeout(() => {
+                this.setState({
+                    press:true
+                })
+            }, timeoutBouton)
+            this.setState({showListClient: !this.state.showListClient});
+            this.displayListClient();
+        }
+    }
+
+    _renderItem(item) {
+        let swipeoutBtns = [
+                {
+                    text: 'Delete',
+                    backgroundColor: Couleurs.mainColors.black,
+                    color: Couleurs.mainColors.orange,
+                    height: 100,
+                    onPress: () => {
+                        this.deleteBesoin(itemSelect);
+                    }
+                }],
+
+            itemSelect = null;
+
+        return(
+            <Swipeout right={swipeoutBtns} autoClose={true} onOpen={() => {itemSelect = item }}  buttonWidth={70} style={styles.touchable}>
+                <TouchableOpacity  onPress={() => {this._choixBesoin(item)}}>
+                    <View style={styles.title}>
+                        <Text style={styles.titleText}>
+                           {item.client}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </Swipeout>
+        )
+    };
 
     render() {
         return (
@@ -250,19 +443,10 @@ export default class FicheBesoin extends Component {
                                caretHidden={true}
                     />
 
-                    <TextInput style={styles.input}
-                               placeholder="Client"
-                               value={this.state.client}
-                               returnKeyType={'next'}
-                               clearButtonMode={'never'}
-                               keyboardType={'default'}
-                               underlineColorAndroid='transparent'
-                               onChangeText={(nom) => {
-                                   this.setState({
-                                       client: nom
-                                   })
-                               }}
-                    />
+                    {this.displayListClient()}
+
+
+
 
                     <TextInput style={styles.input}
                                placeholder="Contact Name"
@@ -307,6 +491,7 @@ export default class FicheBesoin extends Component {
                     />
 
                     {this.affichageFactors()}
+
                     <View style={styles.durationView}>
                         <TextInput style={styles.inputDuration}
                                    placeholder={"Duration (months)"}
@@ -397,7 +582,7 @@ export default class FicheBesoin extends Component {
 
                     {this.affichageConsultants()}
 
-                    <TouchableOpacity style={styles.bouton} onPress={(event) => {this.saveShare.bind(this)}}>
+                    <TouchableOpacity style={styles.bouton} onPress={this.saveShare.bind(this)}>
                         <Text style={styles.txtBouton}>Save & Share</Text>
                     </TouchableOpacity>
 
@@ -407,7 +592,6 @@ export default class FicheBesoin extends Component {
     }
 
     saveShare(){
-        alert('coucou')
         let besoin = {
                 titre: this.state.titre,
                 contact: this.state.contact,
@@ -431,6 +615,8 @@ export default class FicheBesoin extends Component {
         })
 
     }
+
+
 
 }
 
@@ -534,6 +720,30 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         paddingLeft: 15
     },
+    inputClient:{
+        color: '#000',
+        backgroundColor: '#fff',
+        height: 50,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+        marginTop : width*0.025,
+        borderStyle: 'solid',
+        borderColor: '#B9B9B9',
+        borderWidth: 1,
+        paddingLeft: 15
+    },
+    subInput:{
+        color: '#000',
+        backgroundColor: '#fff',
+        height: 50,
+        borderRadius: 10,
+        marginTop : width*0.025,
+        borderStyle: 'solid',
+        borderColor: '#B9B9B9',
+        borderWidth: 1,
+        paddingLeft: 15,
+        marginLeft: 40
+    },
     inputDuration:{
         width: width/2,
         color: '#000',
@@ -585,6 +795,18 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 15,
         fontSize: 20,
+    },
+    touchable: {
+            backgroundColor: Couleurs.header.background,
+            height: 50,
+            borderStyle: 'solid',
+            borderColor: '#B9B9B9',
+            borderWidth: 1,
+            paddingLeft: 15,
+        paddingTop: 10
+    },
+    titleText:{
+        color: Couleurs.header.title
     }
 
 });

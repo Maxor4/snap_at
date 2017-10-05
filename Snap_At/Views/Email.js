@@ -23,6 +23,7 @@ import Couleurs from '../scripts/Couleurs';
 import {ws} from '../index.js'
 
 var width = Dimensions.get('window').width;
+var height = Dimensions.get('window').height;
 
 export default class Email extends Component {
 
@@ -34,6 +35,10 @@ export default class Email extends Component {
             email: '',
             modalVisible: false,
         };
+
+        this.props.navigator.setStyle({
+            navBarHidden: true
+        });
     }
 
     setModalVisible(visible) {
@@ -100,12 +105,13 @@ export default class Email extends Component {
 
     EcranListe() {
         return (
-            <ScrollView style={styles.container} >
+            <ScrollView style={{height: 200}}>
                 <FlatList
                     data={this.state.emails}
                     extraData={this.state}
                     renderItem={({item}) => this._renderItem(item)}
                     keyExtractor={(item) => item}
+                    style={styles.list}
                 />
             </ScrollView>
         );
@@ -113,7 +119,7 @@ export default class Email extends Component {
 
     EcranModal(){
         return(
-            <Modal animationType="slide" transparent={false} visible={this.state.modalVisible} >
+            <Modal animationType="slide" style={styles.modal} transparent={false} visible={this.state.modalVisible}>
                 <TextInput
                     ref={'email'}
                     style={styles.input}
@@ -128,11 +134,10 @@ export default class Email extends Component {
                         });
                         this.recherche()
                     }}
-                    onSubmitEditing={this.focusNextField.bind(this)}
                     returnKeyType={'next'}
                 />
 
-                <ScrollView style={styles.container} >
+                <ScrollView>
                     <FlatList
                         data={this.state.data}
                         extraData={this.state}
@@ -146,25 +151,33 @@ export default class Email extends Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.container}>
 
-                {this.EcranModal()}
+                <View style={styles.view}>
 
-                <TextInput
-                    ref={'email'}
-                    style={styles.input}
-                    value={this.state.email}
-                    keyboardType={'email-address'}
-                    placeholder={'Email'}
-                    underlineColorAndroid={'transparent'}
-                    onFocus={() => {
-                        this.setModalVisible(!this.state.modalVisible)
-                    }}
-                />
+                    {this.EcranModal()}
 
-                {this.EcranListe()}
+
+                    <TextInput
+                        ref={'email'}
+                        style={styles.input}
+                        value={this.state.email}
+                        keyboardType={'email-address'}
+                        placeholder={'Email'}
+                        underlineColorAndroid={'transparent'}
+                        onFocus={() => {
+                            this.setModalVisible(!this.state.modalVisible)
+                        }}
+                    />
+
+                    {this.EcranListe()}
+
+                </View>
+
+
             </View>
         );
+
     }
 
     saveShare(){
@@ -175,11 +188,53 @@ export default class Email extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
-        width: width,
-        backgroundColor: Couleurs.list.background
+        flex: 1,
+        backgroundColor: Couleurs.noir+'CC',
+        paddingHorizontal: 10,
+        paddingTop: 15,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    modal: {
+        width: width/2,
+        backgroundColor: Couleurs.list.background+'00',
+        height: 200,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     email: {
         width: (width-5)/2
+    },
+    mainView: {
+        flex: 1,
+        backgroundColor: Couleurs.darkGray+'CC',
+        height: height
+    },
+    view:{
+        flex: 1,
+        borderRadius: 10,
+        paddingBottom: 10,
+        backgroundColor:'#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        width: width/4*3,
+        height: height/2
+    },
+    input:{
+        color: '#000',
+        backgroundColor: '#fff',
+        height: 50,
+        borderRadius: 10,
+        marginTop : width*0.025,
+        borderStyle: 'solid',
+        borderColor: '#B9B9B9',
+        borderWidth: 1,
+        paddingLeft: 15,
+        width: 200
+    },
+    list:{
+        height: 50,
+        backgroundColor: Couleurs.rouge
     }
 });
