@@ -41,6 +41,27 @@ export default class Email extends Component {
         });
     }
 
+    componentDidMount()
+    {
+        this.refreshCommerciaux();
+    }
+
+    refreshCommerciaux() {
+
+        this.setState({
+            refreshing:true
+        });
+        ws.getListeCommerciaux((data) => {
+            this.setState({
+                data: ws.Commerciaux,
+                refreshing: false
+            })
+        });
+        /*this.setState({
+            refreshing: false
+        })*/
+    }
+
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
     }

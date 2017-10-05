@@ -9,21 +9,18 @@ import {
 
 import Config from '../config/Config.js';
 
-var dateFormat = require('dateformat');
-
 function WebService() {
     this.serveur = Config.serveur;
     this.identifierStorage = '@SaStorage';
-    this.email = 'test@test.fr';
+    this.email = 'adam.petit@gfi.fr';
 
     this.token = '';
+    this.id = null;
+    this.Username= null;
     this.navigator = null;
     this.Besoins = {};
-    this.protocoles = [];
-    this.reglages = {
-        tutoiement: null,
-        intitule: null
-    };
+    this.Clients = {};
+    this.Commerciaux = {};
 
     this.tokenEnChargement = Platform.OS === 'ios' ;
     AsyncStorage.getItem(this.identifierStorage+":token", (error, value) => {
@@ -56,6 +53,8 @@ function WebService() {
 
 WebService.prototype.reset = function() {
     this.setBesoins([]);
+    this.setClients([]);
+    this.setCommerciaux([]);
     this.setToken('');
 }
 
@@ -73,24 +72,6 @@ WebService.prototype._retourDeconnexion = function() {
  * GETTERS / SETTERS
  *
  **/
-
-WebService.prototype.getReglage = function (index) {
-    return this.reglages[index];
-};
-
-WebService.prototype.addReglage = function (index, valeur, callback) {
-    this.reglages[index] = valeur;
-    AsyncStorage.setItem(this.identifierStorage+":reglages", JSON.stringify(this.reglages), () => {
-        typeof callback === 'function' ? callback() : null;
-    }).done();
-    return this;
-};
-
-WebService.prototype.setReglages = function (reglages) {
-    this.reglages = reglages;
-    AsyncStorage.setItem(this.identifierStorage+":reglages", JSON.stringify(reglages)).done();
-    return this;
-};
 
 WebService.prototype.setToken = function (token, callback) {
     this.token = token;
@@ -110,9 +91,28 @@ WebService.prototype.setBesoins = function (Besoins, callback) {
     return this;
 };
 
+WebService.prototype.setClients = function (Clients, callback) {
+    this.Clients = Clients;
+    AsyncStorage.setItem(this.identifierStorage+":Clients", JSON.stringify(Clients), () => {
+        if(typeof(callback) == 'function') {
+            callback();
+        }
+    }).done();
+    return this;
+};
+
 WebService.prototype.setCommerciaux = function (Commerciaux, callback) {
     this.Commerciaux = Commerciaux;
     AsyncStorage.setItem(this.identifierStorage+":Commerciaux", JSON.stringify(Commerciaux), () => {
+        if(typeof(callback) == 'function') {
+            callback();
+        }
+    }).done();
+    return this;
+};
+WebService.prototype.setEmploye = function (id, callback) {
+    this.id = id;
+    AsyncStorage.setItem(this.identifierStorage+":EmployeId", JSON.stringify(id), () => {
         if(typeof(callback) == 'function') {
             callback();
         }
@@ -139,32 +139,20 @@ WebService.prototype.request = function(url, method, data, callback, fallback) {
             body:    data,
             headers: {
                 'Content-Type': 'multipart/form-data',
-                'x-csrf-token': this.token
+                'X-Auth-Token': this.token
             }
         })
             .then((response) => {
-                if(response.status == 200) {
+                if(response.status === 200) {
                     return response.json();
                 }
                 else {
-
                     throw new Error('Something went wrong on api server!');
                 }
             })
             .then((response) => {
-                if(response.status == 1) {
-                    return typeof callback === 'function' ? callback(response.data) : null;
-                }
-                else {
-                    if(parseInt(response.status) == 847) {
-                        this._retourDeconnexion();
-                    }
-                    if(typeof fallback === 'function') {
-                        fallback(JSON.stringify(response));
-                    }
+                    return typeof callback === 'function' ? callback(response) : null;
 
-                    throw new Error(response.message);
-                }
             })
             .catch((error) => {
                 if(typeof fallback === 'function') {
@@ -176,18 +164,14 @@ WebService.prototype.request = function(url, method, data, callback, fallback) {
 
 WebService.prototype.connexion = function (mdp, callback, fallback) {
     let form = new FormData();
-    form.append('email', this.email);
+    form.append('login', this.email);
     form.append('password', mdp);
-    this.request(this.serveur+'auth', 'POST', form, (data) => {
-        this.reglages.employee = {
-            'firstname' : data.firstname,
-            'id_employee' : data.id_employee,
-            'lastname' : data.lastname,
-        };
-        this.setReglages(this.reglages).setToken(data.token);
-
+    this.request(this.serveur+'auths/tokens', 'POST', form, (data) => {
+        this.setToken(data.value);
+        this.setEmploye(data.itc.id);
+        typeof callback === 'function' ? callback() : null;
     }, (data) => {
-        fallback(data);
+       fallback(data);
     });
 };
 
@@ -199,25 +183,29 @@ WebService.prototype.isConnecte = function(callback, fallback) {
     });
 };
 
-WebService.prototype.getListeBesoins = function (callback, force) {
-    force = typeof(force) === 'undefined' ? false : force;
+WebService.prototype.getListeBesoins = function (callback) {
 
-    if(Object.keys(this.Besoins).length === 0 || force) {
-        this.request(this.serveur+'besoins/liste','GET', null, (data) => {
-            let temp = {};
-            data.Besoins.map(function(key, index) {
-                temp[key.id_Besoin] = new Besoin(key);
-            });
+    this.request(this.serveur+'besoins/all/1','GET', null, (data) => {
+        this.setBesoins(data);
+        callback(data);
+    });
+};
 
-            this.setBesoins(temp);
-            callback(temp);
-        });
-    }
-    else {
-        if(typeof callback === 'function') {
-            callback(this.Besoins);
-        }
-    }
+WebService.prototype.getListeClients = function (callback) {
+
+    this.request(this.serveur+'client','GET', null, (data) => {
+        this.setClients(data);
+        callback(data);
+    });
+};
+
+WebService.prototype.getListeCommerciaux = function (callback) {
+
+    this.request(this.serveur+'itc/mail','GET', null, (data) => {
+        alert(data);
+        this.setCommerciaux(data);
+        callback(data);
+    })
 
 };
 
@@ -236,14 +224,6 @@ WebService.prototype.creationBesoin = function(nom, idAgenceAddress, prenom, tel
     this.request(this.serveur+'Besoins/new', 'POST', form, (data) =>
     {
         let temp = this.Besoins;
-        temp[data.id_Besoin] = new Besoin({
-            'id_Besoin': data.id_Besoin,
-            'firstname': prenom,
-            'lastname': nom,
-            'mobile': tel,
-            'id_agence_address': idAgenceAddress,
-            'phone': '',
-        }, false);
 
         this.setBesoins(temp);
         callback(data);

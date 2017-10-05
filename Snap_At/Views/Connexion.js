@@ -29,9 +29,9 @@ export default class Connexion extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            passwd: '',
-            visibleCheckEmail: false,
+            email: ws.email,
+            passwd: 'test',
+            visibleCheckEmail: true,
             connexion: false
         };
     }
@@ -95,21 +95,18 @@ export default class Connexion extends Component {
     _handlePress(){
         if(this.state.visibleCheckEmail) {
             if (!this.state.connexion) {
-                ws.connexion(this.state.mdp, () => {
-                    /*this.props.navigator.resetTo({
+                ws.connexion(this.state.passwd, () => {
+                    this.props.navigator.resetTo({
                         screen: 'SA.ListeBesoins'
-                    })*/
-                    alert('hello')
-                }, (data) => {
-                    alert(data.message);
+                    });
                 });
                 this.setState({connexion: true})
             }
         }
 
-        this.props.navigator.resetTo({
+        /*this.props.navigator.resetTo({
             screen: 'SA.ListeBesoins'
-        })
+        })*/
     }
 }
 

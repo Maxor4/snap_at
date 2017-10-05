@@ -34,11 +34,13 @@ export default class FicheBesoin extends Component {
         super(props);
 
         this.state = {
+            clients:[],
             titre: '',
-            contact: '',
+            contactcli: '',
             showListClient: false,
             client: '',
-            date: dateJour,
+            datecreation: dateJour,
+            description: '',
             showFactors: false,
             factor1: '',
             factor2: '',
@@ -55,44 +57,6 @@ export default class FicheBesoin extends Component {
             address: '',
             zipCode: '',
             rate: null,
-            text: '',
-            data: [
-                {client: 'Proposition de contrat CGI refonte SI'},
-                {client: 'konnichiwa'},
-                {client: 'bonjouro'},
-                {client: 'sdfg'},
-                {client: 'gfds'},
-                {client: 'gdfgsdf'},
-                {client: 'fgsdfgsd'},
-                {client: 'sdfgsdf'},
-                {client: 'gfdg'},
-                {client: 'gfder'},
-                {client: 'grtyth'},
-                {client: 'sdfgrt'},
-                {client: 'helyuikhlo'},
-                {client: 'oihouil'},
-                {client: 'mpoiu'}],
-
-            press: true,
-            refreshing: false,
-            liste: true,
-
-            dataSet:[
-                {client: 'Proposition de contrat CGI refonte SI'},
-                {client: 'konnichiwa'},
-                {client: 'bonjouro'},
-                {client: 'sdfg'},
-                {client: 'gfds'},
-                {client: 'gdfgsdf'},
-                {client: 'fgsdfgsd'},
-                {client: 'sdfgsdf'},
-                {client: 'gfdg'},
-                {client: 'gfder'},
-                {client: 'grtyth'},
-                {client: 'sdfgrt'},
-                {client: 'helyuikhlo'},
-                {client: 'oihouil'},
-                {client: 'mpoiu'}]
         };
 
         this.props.navigator.setStyle({
@@ -104,6 +68,28 @@ export default class FicheBesoin extends Component {
         this.props.navigator.setTitle({
             title: 'Need sheet'
         })
+    }
+
+    componentDidMount()
+    {
+        this.refreshClients();
+    }
+
+    refreshClients() {
+
+        this.setState({
+            refreshing:true
+        });
+        ws.getListeClients((data) => {
+            alert(ws.Clients)
+            this.setState({
+                data: ws.Clients,
+                refreshing: false
+            })
+        });
+        /*this.setState({
+            refreshing: false
+        })*/
     }
 
     textInputFocused() {
@@ -441,7 +427,7 @@ export default class FicheBesoin extends Component {
 
                     <TextInput style={styles.input}
                                placeholder="Contact Name"
-                               value={this.state.contact}
+                               value={this.state.contactcli}
                                returnKeyType={'next'}
                                clearButtonMode={'never'}
                                keyboardType={'default'}
@@ -591,9 +577,10 @@ export default class FicheBesoin extends Component {
     saveShare(){
         let besoin = {
                 titre: this.state.titre,
-                contact: this.state.contact,
+                contactcli: this.state.contact,
                 client: this.state.client,
-                date: this.state.date,
+                datecreation: this.state.datecreation,
+            description: this.state.description,
                 tempsDuree: this.state.tempsDuree,
                 typeDuree: this.state.typeDuree,
                 dateLatest: this.state.dateLatest,

@@ -25,23 +25,6 @@ import Navbar from './component/Navbar.js'
 var width = Dimensions.get('window').width,
     timeoutBouton= 2000;
 
-
-function arrayFromHashes(first, second) {
-    let temp = [],
-        idsOk = [];
-    for(let i in first) {
-        temp.push(first[i]);
-        idsOk.push(first[i].id_besoin);
-    }
-    for(let i in second) {
-        if(typeof(idsOk[second[i].id_besoin]) == 'undefined') {
-            temp.push(second[i]);
-        }
-    }
-    return temp;
-}
-
-
 export default class ListeBesoins extends Component {
 
     static navigatorStyle={
@@ -56,56 +39,21 @@ export default class ListeBesoins extends Component {
         this.props.navigator.setStyle({
             navBarBackgroundColor: Couleurs.header.background,
             navBarTextColor: Couleurs.header.title
-        })
+        });
 
         this.state = {
-            data: [
-                {titre: 'Proposition de contrat CGI refonte SI', date:'30/12/1995', statut: 'Validated'},
-                {titre: 'konnichiwa', date:'30/12/1995', statut: 'refusé'},
-                {titre: 'bonjouro', date:'30/12/1995', statut: 'En attente'},
-                {titre: 'sdfg', date:'30/12/1995', statut: 'validé'},
-                {titre: 'gfds', date:'30/12/1995', statut: 'refusé'},
-                {titre: 'gdfgsdf', date:'30/12/1995', statut: 'En attente'},
-                {titre: 'fgsdfgsd', date:'30/12/1995', statut: 'validé'},
-                {titre: 'sdfgsdf', date:'30/12/1995', statut: 'refusé'},
-                {titre: 'gfdg', date:'30/12/1995', statut: 'En attente'},
-                {titre: 'gfder', date:'30/12/1995', statut: 'validé'},
-                {titre: 'grtyth', date:'30/12/1995', statut: 'refusé'},
-                {titre: 'sdfgrt', date:'30/12/1995', statut: 'En attente'},
-                {titre: 'helyuikhlo', date:'30/12/1995', statut: 'validé'},
-                {titre: 'oihouil', date:'30/12/1995', statut: 'refusé'},
-                {titre: 'mpoiu', date:'30/12/1995', statut: 'En attente'}],
-
+            data: [],
             press: true,
             refreshing: false,
             liste: true,
             filtre: 'titre',
-
-            dataSet:[
-                {titre: 'Proposition de contrat CGI refonte SI', date:'30/12/1995', statut: 'Validated'},
-        {titre: 'konnichiwa', date:'30/12/1995', statut: 'refusé'},
-        {titre: 'bonjouro', date:'30/12/1995', statut: 'En attente'},
-        {titre: 'sdfg', date:'30/12/1995', statut: 'validé'},
-        {titre: 'gfds', date:'30/12/1995', statut: 'refusé'},
-        {titre: 'gdfgsdf', date:'30/12/1995', statut: 'En attente'},
-        {titre: 'fgsdfgsd', date:'30/12/1995', statut: 'validé'},
-        {titre: 'sdfgsdf', date:'30/12/1995', statut: 'refusé'},
-        {titre: 'gfdg', date:'30/12/1995', statut: 'En attente'},
-        {titre: 'gfder', date:'30/12/1995', statut: 'validé'},
-        {titre: 'grtyth', date:'30/12/1995', statut: 'refusé'},
-        {titre: 'sdfgrt', date:'30/12/1995', statut: 'En attente'},
-        {titre: 'helyuikhlo', date:'30/12/1995', statut: 'validé'},
-        {titre: 'oihouil', date:'30/12/1995', statut: 'refusé'},
-        {titre: 'mpoiu', date:'30/12/1995', statut: 'En attente'}]
-
         };
-
     }
 
     componentDidMount()
     {
-       // this.refreshListe();
-     }
+       this.refreshListe();
+    }
 
 
     _ajoutBesoin() {
@@ -135,9 +83,10 @@ export default class ListeBesoins extends Component {
     recherche(text) {
         /*let temp = arrayFromHashes(ws.besoins),
             besoinFilter = ws.besoins;*/
-        let temp = this.state.dataSet,
-            besoinFilter = this.state.dataSet;
-        let re = /^([a-zA-Z0-9_ \/])*$/;
+        let temp = ws.Besoins,
+            besoinFilter = ws.Besoins,
+            re = /^([a-zA-Z0-9_ \/])*$/;
+
         if(!re.test(text)){
             if(text.length == 1 ){
                 this.setState({text: ''});
@@ -197,13 +146,13 @@ export default class ListeBesoins extends Component {
         });
         ws.getListeBesoins((data) => {
             this.setState({
-                data: ws.besoins,
+                data: ws.Besoins,
                 refreshing: false
             })
         });
-        this.setState({
+        /*this.setState({
             refreshing: false
-        })
+        })*/
     }
 
 
@@ -218,7 +167,7 @@ export default class ListeBesoins extends Component {
                 this.setState({
                 data: listeData  //on reset les states et enregistre la listes modifée
             }, () =>   {
-                    this._onRefresh(); // on refresh pour être sûr que la modif apparaise à l'ecran
+                    this.refreshListe(); // on refresh pour être sûr que la modif apparaise à l'ecran
                 });
         })
 
@@ -256,7 +205,7 @@ export default class ListeBesoins extends Component {
                         Status : {item.statut}
                     </Text>
                     <Text style={styles.dateText}>
-                        Date : {item.date}
+                        Date : {item.datecreation.split('T')}
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -314,6 +263,7 @@ export default class ListeBesoins extends Component {
     render() {
         if (this.state.liste) {
             return(this.EcranListe())
+
         }
         else {
             return (
