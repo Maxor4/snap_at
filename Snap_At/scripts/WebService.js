@@ -239,7 +239,7 @@ WebService.prototype.creationBesoin = function(besoin, callback, fallback) {
 
     this.request(this.serveur+'besoin/create', 'POST', form, (data) =>
     {
-        callback(data);
+        typeof callback === 'function' ? callback(data) : null;
     }, function(data) {
         fallback(data);
     });
