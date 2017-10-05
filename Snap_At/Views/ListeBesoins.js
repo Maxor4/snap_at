@@ -283,7 +283,7 @@ export default class ListeBesoins extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: Couleurs.list.background,
-        marginBottom: 50
+        marginBottom: 60
     },
     ajoutBesoin: {
         position: 'absolute',
@@ -309,20 +309,22 @@ const styles = StyleSheet.create({
         color: '#000000',
         marginLeft: 10,
         marginBottom: 10,
+        bottom: 6
     },
     dateText: {
         textAlign: 'right',
         fontSize: 18,
         color: '#000000',
         position: 'absolute',
-        right: 6
+        right: 6,
+        bottom: 15
     },
     titleText: {
         textAlign: 'left',
         fontSize: 18,
         color: '#000000',
         marginTop: 10,
-        marginLeft: 10
+        marginLeft: 10,
     },
     touchable:{
         height: 80,
@@ -332,7 +334,7 @@ const styles = StyleSheet.create({
         borderBottomColor: Couleurs.list.border,
     },
     subHeader: {
-        backgroundColor: Couleurs.list.background
+        backgroundColor: Couleurs.list.black
     },
     subSubHeader: {
         backgroundColor: Couleurs.list.background,
@@ -341,7 +343,7 @@ const styles = StyleSheet.create({
     },
     navbar:{
         backgroundColor: Couleurs.list.background,
-        color: Couleurs.header.title
+        color: Couleurs.header.title,
     }
 
 });
