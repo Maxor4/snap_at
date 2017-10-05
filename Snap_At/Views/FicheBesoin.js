@@ -60,12 +60,17 @@ export default class FicheBesoin extends Component {
     }
 
     populatePicker(){
-        for (let i= 1; i<=7; i++ ){
-            let a = JSON.stringify(i)
-            return(
-                <Picker.Item style={{width: 30}} label={a} value={i} />
-            )
-        }
+        return(
+            <View>
+                <Picker.Item style={{width: 30}} label="1" value={1} />
+                <Picker.Item style={{width: 30}} label="2" value={2} />
+                <Picker.Item style={{width: 30}} label="3" value={3} />
+                <Picker.Item style={{width: 30}} label="4" value={4} />
+                <Picker.Item style={{width: 30}} label="5" value={5} />
+                <Picker.Item style={{width: 30}} label="6" value={6} />
+                <Picker.Item style={{width: 30}} label="7" value={7} />
+            </View>
+        )
     }
 
     textInputFocused() {
