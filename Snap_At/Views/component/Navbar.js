@@ -26,6 +26,7 @@ export default class RecherchePatient extends Component {
             <View style={styles.inputRecherche}>
                 <TextInput
                     style={styles.texte}
+                    value={this.props.text}
                     onChangeText={(text) => {
                         Navigation.handleDeepLink({
                             link: 'rechercheBesoin',

@@ -137,7 +137,12 @@ export default class ListeBesoins extends Component {
             besoinFilter = ws.besoins;*/
         let temp = this.state.dataSet,
             besoinFilter = this.state.dataSet;
-
+        let re = /^([a-zA-Z0-9_])*$/;
+        if(!re.test(text)){
+            this.setState({text: text.substring(0, text.length-1)},() => {text = this.state.text;});
+        }else{
+            this.setState({text: text})
+        }
         if(typeof text === 'string' && text.length > 0){
             besoinFilter = [];
             let regex = new RegExp(text.toLowerCase(), 'i');
@@ -250,7 +255,7 @@ export default class ListeBesoins extends Component {
     EcranListe(){
         return (
             <View style={styles.subHeader}>
-                <Navbar style={styles.navbar}/>
+                <Navbar style={styles.navbar} text={this.state.text}/>
 
                 {this.listeFiltres()}
 
