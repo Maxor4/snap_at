@@ -54,18 +54,17 @@ RecherchePatient.propTypes = {
 
 const styles = StyleSheet.create({
     inputRecherche: {
-        height: 44,
         justifyContent: 'space-between',
         flexDirection: 'row',
         backgroundColor: Couleurs.header.background,
-        height: 60
+        height: 60,
+        paddingRight: 80
     },
     texte: {
         flex: 1,
         paddingLeft: 25,
         backgroundColor: 'transparent',
         color: Couleurs.header.title,
-        width: width/5*3,
         fontSize: 18,
     },
     loupe: {

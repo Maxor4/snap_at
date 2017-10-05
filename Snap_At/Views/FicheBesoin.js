@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 
 import { Navigation } from 'react-native-navigation';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Couleurs from '../scripts/Couleurs';
 
 import {ws} from '../index.js'
@@ -36,7 +37,9 @@ export default class FicheBesoin extends Component {
             client: '',
             date: dateJour,
             showFactors: false,
+            factor: '',
             showConsultants: false,
+            consultant: '',
             tempsDuree: null,
             typeDuree: 'Jour',
             dateLatest: null,
@@ -60,13 +63,17 @@ export default class FicheBesoin extends Component {
         for (let i= 1; i<=7; i++ ){
             let a = JSON.stringify(i)
             return(
-                <Picker.Item label={a} value={i} />
+                <Picker.Item style={{width: 30}} label={a} value={i} />
             )
         }
     }
 
     textInputFocused() {
         this.refs['mainScrollview'].contentOffset;
+    }
+
+    affichageFlecheDropdown() {
+        return (<SimpleLineIcons name="arrow-down" style={[styles.dropdownarrow, {top : 10}]}/>);
     }
 
 
@@ -76,7 +83,9 @@ export default class FicheBesoin extends Component {
                 <View>
                     <TouchableOpacity style={styles.dropDown} onPress={() => {this.setState({showFactors: !this.state.showFactors})}}>
                         <Text style={styles.txtDropDown}> Factors </Text>
+                        {this.affichageFlecheDropdown()}
                     </TouchableOpacity>
+
                 </View>
             )
         }
@@ -85,46 +94,47 @@ export default class FicheBesoin extends Component {
                 <View>
                     <TouchableOpacity style={styles.dropDown} onPress={() => {this.setState({showFactors: !this.state.showFactors})}}>
                         <Text style={styles.txtDropDown}> Factors </Text>
+                        {this.affichageFlecheDropdown()}
                     </TouchableOpacity>
                     <TextInput
                         style={styles.input}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Factor"
+                        value={this.state.factor}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                factor: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Factor"
+                        value={this.state.factor}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                factor: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Factor"
+                        value={this.state.factor}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                factor: nom
                             })
                         }}
                     />
@@ -140,6 +150,7 @@ export default class FicheBesoin extends Component {
                 <View>
                     <TouchableOpacity style={styles.dropDown} onPress={() => {this.setState({showConsultants: !this.state.showConsultants})}}>
                         <Text style={styles.txtDropDown}> Consultants </Text>
+                        {this.affichageFlecheDropdown()}
                     </TouchableOpacity>
                 </View>
             )
@@ -149,74 +160,75 @@ export default class FicheBesoin extends Component {
                 <View>
                     <TouchableOpacity style={styles.dropDown} onPress={() => {this.setState({showConsultants: !this.state.showConsultants})}}>
                         <Text style={styles.txtDropDown}> Consultants </Text>
+                        {this.affichageFlecheDropdown()}
                     </TouchableOpacity>
                     <TextInput
                         style={styles.input}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Consultant"
+                        value={this.state.consultant}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                consultant: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Consultant"
+                        value={this.state.consultant}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                consultant: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Consultant"
+                        value={this.state.consultant}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                consultant: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Consultant"
+                        value={this.state.consultant}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                consultant: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Consultant"
+                        value={this.state.consultant}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                consultant: nom
                             })
                         }}
                     />
@@ -327,9 +339,6 @@ export default class FicheBesoin extends Component {
                                clearButtonMode={'never'}
                                keyboardType={'default'}
                                underlineColorAndroid='transparent'
-                               onFocus={() => {
-                                   return(this.showCalendar())
-                               }}
                                onChangeText={(date) => {
                                    this.setState({
                                        dateLatest: date
@@ -339,8 +348,8 @@ export default class FicheBesoin extends Component {
 
 
                     <TextInput style={styles.input}
-                               placeholder="Adress"
-                               value={this.state.adress}
+                               placeholder="Address"
+                               value={this.state.address}
                                returnKeyType={'done'}
                                clearButtonMode={'never'}
                                keyboardType={'default'}
@@ -348,7 +357,7 @@ export default class FicheBesoin extends Component {
                                onFocus={this.textInputFocused.bind(this)}
                                onChangeText={(adresse) => {
                                    this.setState({
-                                       adress: adresse
+                                       address: adresse
                                    })
                                }}
                     />
@@ -432,7 +441,8 @@ const styles = StyleSheet.create({
     },
     inputDate:{
         marginTop: 2,
-        fontSize: 21
+        fontSize: 21,
+        color: Couleurs.header.background
     },
     inputAdministration:{
         marginTop: 30,
@@ -453,7 +463,8 @@ const styles = StyleSheet.create({
     picker:{
         width: 100,
         height: 50,
-        paddingTop: 75
+        paddingTop: 75,
+        right: 3
     },
     txtCure:{
         fontStyle: 'italic',
@@ -548,7 +559,7 @@ const styles = StyleSheet.create({
     },
     durationView: {
         flexDirection: 'row',
-        marginBottom: -10
+        marginBottom: -10,
     },
     dpw: {
         paddingTop: 30
@@ -562,10 +573,17 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderColor: Couleurs.list.border,
         borderWidth: 1,
+        justifyContent: 'center'
     },
     txtDropDown:{
         textAlign: 'center',
         fontSize: 16,
+    },
+    dropdownarrow:{
+        color: Couleurs.noir,
+        position: 'absolute',
+        right: 15,
+        fontSize: 20,
     }
 
 });

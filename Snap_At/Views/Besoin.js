@@ -45,7 +45,9 @@ export default class Besoin extends Component {
             client: '',
             date: dateJour,
             showFactors: false,
+            factor: '',
             showConsultants: false,
+            consultant: '',
             tempsDuree: null,
             typeDuree: 'Jour',
             dateLatest: null,
@@ -81,43 +83,43 @@ export default class Besoin extends Component {
                     </TouchableOpacity>
                     <TextInput
                         style={styles.inputCure}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Factor"
+                        value={this.state.factor}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                factor: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.inputCure}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Factor"
+                        value={this.state.factor}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                factor: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.inputCure}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Factor"
+                        value={this.state.factor}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                factor: nom
                             })
                         }}
                     />
@@ -144,71 +146,71 @@ export default class Besoin extends Component {
                     </TouchableOpacity>
                     <TextInput
                         style={styles.inputCure}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Consultant"
+                        value={this.state.consultant}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                consultant: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.inputCure}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Consultant"
+                        value={this.state.consultant}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                consultant: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.inputCure}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Consultant"
+                        value={this.state.consultant}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                consultant: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.inputCure}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Consultant"
+                        value={this.state.consultant}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                consultant: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.inputCure}
-                        placeholder="Client"
-                        value={this.state.client}
+                        placeholder="Consultant"
+                        value={this.state.consultant}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                client: nom
+                                consultant: nom
                             })
                         }}
                     />
@@ -413,7 +415,7 @@ const styles = StyleSheet.create({
         fontSize: 21
     },
     picker:{
-        width: 100,
+        width: 70,
         height: 50,
         paddingTop: 75
     },
