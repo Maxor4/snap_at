@@ -32,10 +32,12 @@ export default class FicheBesoin extends Component {
         super(props);
 
         this.state = {
+            clients:[],
             titre: '',
-            contact: '',
+            contactcli: '',
             client: '',
-            date: dateJour,
+            datecreation: dateJour,
+            description: '',
             showFactors: false,
             factor: '',
             showConsultants: false,
@@ -57,6 +59,28 @@ export default class FicheBesoin extends Component {
         this.props.navigator.setTitle({
             title: 'Need sheet'
         })
+    }
+
+    componentDidMount()
+    {
+        this.refreshClients();
+    }
+
+    refreshClients() {
+
+        this.setState({
+            refreshing:true
+        });
+        ws.getListeClients((data) => {
+            alert(ws.Clients)
+            this.setState({
+                data: ws.Clients,
+                refreshing: false
+            })
+        });
+        /*this.setState({
+            refreshing: false
+        })*/
     }
 
     textInputFocused() {
@@ -257,7 +281,7 @@ export default class FicheBesoin extends Component {
 
                     <TextInput style={styles.input}
                                placeholder="Contact Name"
-                               value={this.state.contact}
+                               value={this.state.contactcli}
                                returnKeyType={'next'}
                                clearButtonMode={'never'}
                                keyboardType={'default'}
@@ -407,9 +431,10 @@ export default class FicheBesoin extends Component {
         alert('coucou')
         let besoin = {
                 titre: this.state.titre,
-                contact: this.state.contact,
+                contactcli: this.state.contact,
                 client: this.state.client,
-                date: this.state.date,
+                datecreation: this.state.datecreation,
+            description: this.state.description,
                 tempsDuree: this.state.tempsDuree,
                 typeDuree: this.state.typeDuree,
                 dateLatest: this.state.dateLatest,
