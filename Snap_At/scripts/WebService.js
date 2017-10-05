@@ -110,6 +110,16 @@ WebService.prototype.setBesoins = function (Besoins, callback) {
     return this;
 };
 
+WebService.prototype.setCommerciaux = function (Commerciaux, callback) {
+    this.Commerciaux = Commerciaux;
+    AsyncStorage.setItem(this.identifierStorage+":Commerciaux", JSON.stringify(Commerciaux), () => {
+        if(typeof(callback) == 'function') {
+            callback();
+        }
+    }).done();
+    return this;
+};
+
 /**
  *
  * REQUESTS

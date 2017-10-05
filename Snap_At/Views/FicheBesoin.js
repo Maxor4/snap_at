@@ -40,7 +40,7 @@ export default class FicheBesoin extends Component {
             tempsDuree: null,
             typeDuree: 'Jour',
             dateLatest: null,
-            adress: '',
+            address: '',
             zipCode: '',
             rate: null,
         };
@@ -398,6 +398,27 @@ export default class FicheBesoin extends Component {
     }
 
     saveShare(){
+        let besoin = {
+                titre: this.state.titre,
+                contact: this.state.contact,
+                client: this.state.client,
+                date: this.state.date,
+                tempsDuree: this.state.tempsDuree,
+                typeDuree: this.state.typeDuree,
+                dateLatest: this.state.dateLatest,
+                address: this.state.address,
+                zipCode: this.state.zipCode,
+                rate: this.state.rate,};
+
+        /*ws.creationBesoin(besoin, () => {
+            this.props.navigator.showModal({
+                screen: 'SA.SelectEmails'
+            })
+        })*/
+
+        this.props.navigator.showModal({
+            screen: 'SA.SelectEmails'
+        })
 
     }
 

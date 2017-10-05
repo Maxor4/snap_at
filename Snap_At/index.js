@@ -13,6 +13,7 @@ import FicheBesoin from './Views/FicheBesoin'
 import Couleurs from './scripts/Couleurs.js'
 import Besoin from './Views/Besoin'
 import Navbar from './Views/component/Navbar.js'
+import Email from './Views/Email.js'
 
 
 export function registerScreens() {
@@ -21,6 +22,7 @@ export function registerScreens() {
     Navigation.registerComponent('SA.FicheBesoin', () => FicheBesoin);
     Navigation.registerComponent('SA.Navbar.RechercheBesoin', () => Navbar);
     Navigation.registerComponent('SA.Besoin', () => Besoin);
+    Navigation.registerComponent('SA.SelectEmails', () => Email);
 
 }
 

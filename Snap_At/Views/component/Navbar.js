@@ -28,7 +28,7 @@ export default class RecherchePatient extends Component {
                     style={styles.texte}
                     onChangeText={(text) => {
                         Navigation.handleDeepLink({
-                            link: 'recherchePatient',
+                            link: 'rechercheBesoin',
                             payload: text
                         });
                     }}
