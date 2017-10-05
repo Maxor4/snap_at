@@ -24,7 +24,7 @@ var width = Dimensions.get('window').width,
 
 const dateJour = dateFormat(new Date(), 'dd/mm/yyyy');
 
-export default class FicheBesoin extends Component {
+export default class Besoin extends Component {
 
     constructor(props) {
         super(props);

@@ -397,7 +397,7 @@ export default class FicheBesoin extends Component {
 
                     {this.affichageConsultants()}
 
-                    <TouchableOpacity style={styles.bouton} onPress={(event) => this.saveShare.bind(this)}>
+                    <TouchableOpacity style={styles.bouton} onPress={(event) => {this.saveShare.bind(this)}}>
                         <Text style={styles.txtBouton}>Save & Share</Text>
                     </TouchableOpacity>
 
@@ -407,6 +407,28 @@ export default class FicheBesoin extends Component {
     }
 
     saveShare(){
+        alert('coucou')
+        let besoin = {
+                titre: this.state.titre,
+                contact: this.state.contact,
+                client: this.state.client,
+                date: this.state.date,
+                tempsDuree: this.state.tempsDuree,
+                typeDuree: this.state.typeDuree,
+                dateLatest: this.state.dateLatest,
+                address: this.state.address,
+                zipCode: this.state.zipCode,
+                rate: this.state.rate,};
+
+        /*ws.creationBesoin(besoin, () => {
+            this.props.navigator.showModal({
+                screen: 'SA.SelectEmails'
+            })
+        })*/
+
+        this.props.navigator.showModal({
+            screen: 'SA.SelectEmails'
+        })
 
     }
 

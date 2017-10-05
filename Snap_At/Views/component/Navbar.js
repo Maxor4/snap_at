@@ -29,7 +29,7 @@ export default class RecherchePatient extends Component {
                     value={this.props.text}
                     onChangeText={(text) => {
                         Navigation.handleDeepLink({
-                            link: 'recherchePatient',
+                            link: 'rechercheBesoin',
                             payload: text
                         });
                     }}

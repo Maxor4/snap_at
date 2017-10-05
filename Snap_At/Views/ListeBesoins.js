@@ -114,16 +114,18 @@ export default class ListeBesoins extends Component {
     }
 
     affichageAjoutPatient() {
-        return (<SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {top : 10}]} onPress={this._ajoutBesoin.bind(this)}/>);
+        return (
+            <SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {top : 10}]} onPress={this._ajoutBesoin.bind(this)}/>
+        );
     }
 
     onNavigatorEvent(event){
         // handle a deep link
-        if (event.type == 'DeepLink') {
+        if (event.type === 'DeepLink') {
             const parts = event.link.split('/'); // Link parts
             const payload = event.payload; // (optional) The payload
 
-            if (parts[0] == 'recherchePatient') {
+            if (parts[0] === 'rechercheBesoin') {
                 this.recherche(payload);
             }
         }
@@ -140,8 +142,8 @@ export default class ListeBesoins extends Component {
         }else{
             this.setState({text: text})
         }
-        if(typeof text == 'string' && text.length > 0){
-            besoinFilter = []
+        if(typeof text === 'string' && text.length > 0){
+            besoinFilter = [];
             let regex = new RegExp(text.toLowerCase(), 'i');
 
             for (let key in temp) {
