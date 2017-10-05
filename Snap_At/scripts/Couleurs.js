@@ -21,10 +21,11 @@ var Couleurs = {
     },
 
     blanc: '#FFFFFF',
-    rouge: '#900',
+    rouge: '#990000',
     bleuClair: '#00aeef',
-    noir: '#000',
-    lightGray: '#EAEAEA'
+    noir: '#000000',
+    lightGray: '#EAEAEA',
+    darkGray: '#555555'
 
 };
 

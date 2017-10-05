@@ -396,7 +396,8 @@ const styles = StyleSheet.create({
     },
     inputDate:{
         marginTop: 2,
-        fontSize: 21
+        fontSize: 21,
+        color: Couleurs.noir
     },
     inputAdministration:{
         marginTop: 30,
@@ -415,7 +416,7 @@ const styles = StyleSheet.create({
         fontSize: 21
     },
     picker:{
-        width: 70,
+        width: 100,
         height: 50,
         paddingTop: 75
     },
