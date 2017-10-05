@@ -397,7 +397,7 @@ export default class FicheBesoin extends Component {
 
                     {this.affichageConsultants()}
 
-                    <TouchableOpacity style={styles.bouton} onPress={(event) => this.saveShare.bind(this)}>
+                    <TouchableOpacity style={styles.bouton} onPress={(event) => {this.saveShare.bind(this)}}>
                         <Text style={styles.txtBouton}>Save & Share</Text>
                     </TouchableOpacity>
 
@@ -407,6 +407,7 @@ export default class FicheBesoin extends Component {
     }
 
     saveShare(){
+        alert('coucou')
         let besoin = {
                 titre: this.state.titre,
                 contact: this.state.contact,

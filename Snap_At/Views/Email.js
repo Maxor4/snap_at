@@ -85,14 +85,14 @@ export default class Email extends Component {
         return(
             <View style={styles.email}>
                 <Text>{item}</Text>
-                <Ionicons name="ios-close" onPress={this.deleteEmail(item)}/>
+                <Ionicons name="ios-close" onPress={() => {this.deleteEmail(item)}}/>
             </View>
         )
     };
 
     _renderEmail(item) {
         return(
-            <TouchableOpacity style={styles.email} onPress={() => this.selectEmail(item)}>
+            <TouchableOpacity style={styles.email} onPress={() => {this.selectEmail(item)}}>
                 <Text>{item}</Text>
             </TouchableOpacity>
         )
@@ -113,7 +113,7 @@ export default class Email extends Component {
 
     EcranModal(){
         return(
-            <Modal animationType="slide" transparent={false} visible={this.state.modalVisible} onRequestClose={() => {alert("Modal has been closed.")}} >
+            <Modal animationType="slide" transparent={false} visible={this.state.modalVisible} >
                 <TextInput
                     ref={'email'}
                     style={styles.input}
