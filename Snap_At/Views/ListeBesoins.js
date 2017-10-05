@@ -148,8 +148,31 @@ export default class ListeBesoins extends Component {
             let regex = new RegExp(text.toLowerCase(), 'i');
 
             for (let key in temp) {
-                if(temp[key].titre.toLowerCase().match(regex)) {
-                    besoinFilter.push(temp[key]);
+                switch (this.state.filtre){
+
+                    case 'titre':
+                        if(temp[key].titre.toLowerCase().match(regex)) {
+                            besoinFilter.push(temp[key]);
+                        }
+                        break;
+
+                    case 'client':
+                        if(temp[key].client.toLowerCase().match(regex)) {
+                            besoinFilter.push(temp[key]);
+                        }
+                        break;
+
+                    case 'date':
+                        if(temp[key].date.toLowerCase().match(regex)) {
+                            besoinFilter.push(temp[key]);
+                        }
+                        break;
+
+                    case 'statut':
+                        if(temp[key].statut.toLowerCase().match(regex)) {
+                            besoinFilter.push(temp[key]);
+                        }
+                        break;
                 }
             }
         }
@@ -235,18 +258,18 @@ export default class ListeBesoins extends Component {
 
     listeFiltre(){
         return(
-            <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity style={{flex:1}} onPress={()=> {this.setFiltre('titre')}}>
+            <View style={styles.viewFiltres}>
+                <TouchableOpacity style={this.state.filtre === 'titre' ? styles.filtreSelection : styles.filtre} onPress={()=> {this.setFiltre('titre')}}>
                     <Text>Titre</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={{flex:1}} onPress={()=> {this.setFiltre('client')}}>
+                <TouchableOpacity  style={this.state.filtre === 'client' ? styles.filtreSelection: styles.filtre} onPress={()=> {this.setFiltre('client')}}>
                     <Text>Client</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={{flex:1}} onPress={()=> {this.setFiltre('date')}}>
+                <TouchableOpacity  style={this.state.filtre === 'date' ? styles.filtreSelection: styles.filtre} onPress={()=> {this.setFiltre('date')}}>
                     <Text>Date</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={{flex:1}} onPress={()=> {this.setFiltre('statut')}}>
-                    <Text>statut</Text>
+                <TouchableOpacity  style={this.state.filtre === 'statut' ? styles.filtreSelection: styles.filtre} onPress={()=> {this.setFiltre('statut')}}>
+                    <Text>Statut</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -257,7 +280,7 @@ export default class ListeBesoins extends Component {
             <View style={styles.subHeader}>
                 <Navbar style={styles.navbar} text={this.state.text}/>
 
-                {this.listeFiltres()}
+                {this.listeFiltre()}
 
                 <ScrollView style={styles.container} refreshControl={
                             <RefreshControl
@@ -326,7 +349,15 @@ const styles = StyleSheet.create({
         color: Couleurs.header.title,
         fontSize: 40
     },
-
+    filtre: {
+        borderWidth: 1,
+        width: width/4.1
+    },
+    filtreSelection: {
+        backgroundColor: 'blue',
+        borderWidth: 1,
+        width: width/4.1
+    },
     flatList: {
         backgroundColor: Couleurs.list.background,
     },
@@ -378,6 +409,13 @@ const styles = StyleSheet.create({
     navbar:{
         backgroundColor: Couleurs.list.background,
         color: Couleurs.header.title,
+    },
+    viewFiltres:{
+        flexDirection: 'row',
+        height: 30,
+        width: width,
+        justifyContent: 'space-between',
+        paddingHorizontal: 2
     }
 
 });
