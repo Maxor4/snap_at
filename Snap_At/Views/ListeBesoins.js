@@ -137,13 +137,21 @@ export default class ListeBesoins extends Component {
             besoinFilter = ws.besoins;*/
         let temp = this.state.dataSet,
             besoinFilter = this.state.dataSet;
-        let re = /^([a-zA-Z0-9_])*$/;
+        let re = /^([a-zA-Z0-9_ \/])*$/;
         if(!re.test(text)){
-            this.setState({text: text.substring(0, text.length-1)},() => {text = this.state.text;});
+            if(text.length == 1 ){
+                this.setState({text: ''});
+                text = this.state.text;
+            }else {
+                this.setState({text: text.substring(0, text.length - 1)}, () => {
+                    text = this.state.text;
+                });
+            }
         }else{
-            this.setState({text: text})
+            this.setState({text: text},() => {text = this.state.text;})
         }
         if(typeof text === 'string' && text.length > 0){
+            alert(this.state.text.length);
             besoinFilter = [];
             let regex = new RegExp(text.toLowerCase(), 'i');
 
@@ -353,6 +361,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         width: width/4,
         justifyContent: 'center',
+        backgroundColor: Couleurs.list.background
     },
     filtreSelection: {
         backgroundColor: Couleurs.header.background,
