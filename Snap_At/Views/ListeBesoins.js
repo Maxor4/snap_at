@@ -79,6 +79,7 @@ export default class ListeBesoins extends Component {
             press: true,
             refreshing: false,
             liste: true,
+            filtre: 'titre',
 
             dataSet:[
                 {titre: 'Proposition de contrat CGI refonte SI', date:'30/12/1995', statut: 'Validated'},
@@ -187,6 +188,10 @@ export default class ListeBesoins extends Component {
 
     }
 
+    setFiltre(choix){
+        this.setState({filtre: choix})
+    }
+
 
     _renderItem(item) {
         let swipeoutBtns = [
@@ -223,10 +228,32 @@ export default class ListeBesoins extends Component {
         )
     };
 
+    listeFiltre(){
+        return(
+            <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity style={{flex:1}} onPress={()=> {this.setFiltre('titre')}}>
+                    <Text>Titre</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  style={{flex:1}} onPress={()=> {this.setFiltre('client')}}>
+                    <Text>Client</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  style={{flex:1}} onPress={()=> {this.setFiltre('date')}}>
+                    <Text>Date</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  style={{flex:1}} onPress={()=> {this.setFiltre('statut')}}>
+                    <Text>statut</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     EcranListe(){
         return (
             <View style={styles.subHeader}>
                 <Navbar style={styles.navbar}/>
+
+                {this.listeFiltres()}
+
                 <ScrollView style={styles.container} refreshControl={
                             <RefreshControl
                                 refreshing={this.state.refreshing}
