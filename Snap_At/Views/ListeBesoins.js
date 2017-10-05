@@ -197,7 +197,7 @@ export default class ListeBesoins extends Component {
                         Status : {item.statut}
                     </Text>
                     <Text style={styles.dateText}>
-                        Date : {item.datecreation.split('T')}
+                        Date : {item.datecreation.length[item.datecreation.length-9]}
                     </Text>
                 </View>
             </TouchableOpacity>

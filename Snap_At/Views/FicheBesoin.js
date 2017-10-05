@@ -42,21 +42,21 @@ export default class FicheBesoin extends Component {
             datecreation: dateJour,
             description: '',
             showFactors: false,
-            factor1: '',
-            factor2: '',
-            factor3: '',
+            succesun: '',
+            succesdeux: '',
+            succestrois: '',
             showConsultants: false,
-            consultant1: '',
-            consultant2: '',
-            consultant3: '',
-            consultant4: '',
-            consultant5: '',
-            tempsDuree: null,
-            typeDuree: 'Jour',
-            dateLatest: null,
+            nomconsun: '',
+            nomconsdeux: '',
+            nomconstrois: '',
+            nomconsquatre: '',
+            nomconscinq: '',
+            dureem: null,
+            dureej: null,
+            datedebuttard: null,
             address: '',
             zipCode: '',
-            rate: null,
+            tarif: null,
         };
 
         this.props.navigator.setStyle({
@@ -123,42 +123,42 @@ export default class FicheBesoin extends Component {
                     <TextInput
                         style={styles.subInput}
                         placeholder="Factor 1"
-                        value={this.state.factor1}
+                        value={this.state.succesun}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
-                        onChangeText={(nom) => {
+                        onChangeText={(text) => {
                             this.setState({
-                                factor1: nom
+                                succesun: text
                             })
                         }}
                     />
                     <TextInput
                         style={styles.subInput}
                         placeholder="Factor 2"
-                        value={this.state.factor2}
+                        value={this.state.succesdeux}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
-                        onChangeText={(nom) => {
+                        onChangeText={(text) => {
                             this.setState({
-                                factor2: nom
+                                succesdeux: text
                             })
                         }}
                     />
                     <TextInput
                         style={styles.subInput}
                         placeholder="Factor 3"
-                        value={this.state.factor3}
+                        value={this.state.succestrois}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
-                        onChangeText={(nom) => {
+                        onChangeText={(text) => {
                             this.setState({
-                                factor3: nom
+                                succestrois: text
                             })
                         }}
                     />
@@ -188,70 +188,70 @@ export default class FicheBesoin extends Component {
                     <TextInput
                         style={styles.subInput}
                         placeholder="Consultant 1"
-                        value={this.state.consultant1}
+                        value={this.state.nomconsun}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                consultant1: nom
+                                nomconsun: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.subInput}
                         placeholder="Consultant 2"
-                        value={this.state.consultant2}
+                        value={this.state.nomconsdeux}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                consultant2: nom
+                                nomconsdeux: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.subInput}
                         placeholder="Consultant 3"
-                        value={this.state.consultant3}
+                        value={this.state.nomconstrois}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                consultant3: nom
+                                nomconstrois: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.subInput}
                         placeholder="Consultant 4"
-                        value={this.state.consultant4}
+                        value={this.state.nomconsquatre}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                consultant4: nom
+                                nomconsquatre: nom
                             })
                         }}
                     />
                     <TextInput
                         style={styles.subInput}
                         placeholder="Consultant 5"
-                        value={this.state.consultant5}
+                        value={this.state.nomconscinq}
                         returnKeyType={'next'}
                         clearButtonMode={'never'}
                         keyboardType={'default'}
                         underlineColorAndroid='transparent'
                         onChangeText={(nom) => {
                             this.setState({
-                                consultant5: nom
+                                nomconscinq: nom
                             })
                         }}
                     />
@@ -455,7 +455,7 @@ export default class FicheBesoin extends Component {
 
                     <TextInput style={styles.input}
                                placeholder="Full Description"
-                               value={this.state.dureeAdmin}
+                               value={this.state.description}
                                returnKeyType={'done'}
                                clearButtonMode={'never'}
                                keyboardType={'default'}
@@ -472,22 +472,22 @@ export default class FicheBesoin extends Component {
                     <View style={styles.durationView}>
                         <TextInput style={styles.inputDuration}
                                    placeholder={"Duration (months)"}
-                                   value={this.state.tempsDuree}
+                                   value={this.state.dureem}
                                    returnKeyType={'next'}
                                    clearButtonMode={'never'}
                                    keyboardType={'numeric'}
                                    underlineColorAndroid='transparent'
-                                   onChangeText={(tempsDuree) => {
+                                   onChangeText={(Duree) => {
                                        this.setState({
-                                           tempsDuree: tempsDuree
+                                           dureem: Duree
                                        })
                                    }}
                         />
 
                         <Picker
                             style={styles.picker}
-                            selectedValue={this.state.typeDuree}
-                            onValueChange={(itemValue, itemIndex) => this.setState({typeDuree: itemValue})}
+                            selectedValue={this.state.dureej}
+                            onValueChange={(itemValue, itemIndex) => this.setState({dureej: itemValue})}
                         >
                             <Picker.Item style={{width: 30}} label="1" value={1} />
                             <Picker.Item style={{width: 30}} label="2" value={2} />
@@ -502,14 +502,14 @@ export default class FicheBesoin extends Component {
 
                     <TextInput style={styles.input}
                                placeholder="Start at latest"
-                               value={this.state.dateLatest}
+                               value={this.state.datedebuttard}
                                returnKeyType={'done'}
                                clearButtonMode={'never'}
                                keyboardType={'default'}
                                underlineColorAndroid='transparent'
                                onChangeText={(date) => {
                                    this.setState({
-                                       dateLatest: date
+                                       datedebuttard: date
                                    })
                                }}
                     />
@@ -547,14 +547,14 @@ export default class FicheBesoin extends Component {
 
                     <TextInput style={styles.input}
                                placeholder="Rate (€ HT)"
-                               value={this.state.rate}
+                               value={this.state.tarif}
                                returnKeyType={'done'}
                                clearButtonMode={'never'}
                                keyboardType={'numeric'}
                                underlineColorAndroid='transparent'
                                onChangeText={(valeur) => {
                                    this.setState({
-                                       rate: valeur
+                                       tarif: valeur
                                    })
                                }}
                     />
@@ -576,17 +576,27 @@ export default class FicheBesoin extends Component {
 
     saveShare(){
         let besoin = {
+            createur: ws.id,
                 titre: this.state.titre,
                 contactcli: this.state.contact,
                 client: this.state.client,
                 datecreation: this.state.datecreation,
             description: this.state.description,
-                tempsDuree: this.state.tempsDuree,
-                typeDuree: this.state.typeDuree,
-                dateLatest: this.state.dateLatest,
+            succesun: this.state.succesun,
+            succesdeux: this.state.succesdeux,
+            succestrois: this.state.succestrois,
+                dureem: this.state.dureem,
+                dureej: this.state.dureej,
+                datedebuttard: this.state.datedebuttard,
+            nomconsun: this.state.nomconsun,
+            nomconsdeux: this.state.nomconsdeux,
+            nomconstrois: this.state.nomconstrois,
+            nomconsquatre: this.state.nomconsquatre,
+            nomconscinq: this.state.nomconscinq,
                 address: this.state.address,
                 zipCode: this.state.zipCode,
-                rate: this.state.rate,};
+                tarif: this.state.tarif,
+        };
 
         /*ws.creationBesoin(besoin, () => {
             this.props.navigator.showModal({
