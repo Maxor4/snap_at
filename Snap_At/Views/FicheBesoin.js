@@ -40,14 +40,16 @@ export default class FicheBesoin extends Component {
             tempsDuree: null,
             typeDuree: 'Jour',
             dateLatest: null,
-            location: '',
+            adress: '',
+            zipCode: '',
             rate: null,
         };
 
         this.props.navigator.setStyle({
             navBarBackgroundColor: Couleurs.header.background,
             navBarTextColor: Couleurs.header.title,
-            navBarButtonColor: Couleurs.header.title
+            navBarButtonColor: Couleurs.header.title,
+            navBarTitleTextCentered: true
         })
         this.props.navigator.setTitle({
             title: 'Need sheet'
@@ -72,8 +74,8 @@ export default class FicheBesoin extends Component {
         if (!this.state.showFactors){
             return(
                 <View>
-                    <TouchableOpacity onPress={() => {this.setState({showFactors: !this.state.showFactors})}}>
-                        <Text></Text>
+                    <TouchableOpacity style={styles.dropDown} onPress={() => {this.setState({showFactors: !this.state.showFactors})}}>
+                        <Text style={styles.txtDropDown}> Factors </Text>
                     </TouchableOpacity>
                 </View>
             )
@@ -81,11 +83,11 @@ export default class FicheBesoin extends Component {
         else {
             return(
                 <View>
-                    <TouchableOpacity onPress={() => {this.setState({showFactors: !this.state.showFactors})}}>
-                        <Text></Text>
+                    <TouchableOpacity style={styles.dropDown} onPress={() => {this.setState({showFactors: !this.state.showFactors})}}>
+                        <Text style={styles.txtDropDown}> Factors </Text>
                     </TouchableOpacity>
                     <TextInput
-                        style={styles.inputCure}
+                        style={styles.input}
                         placeholder="Client"
                         value={this.state.client}
                         returnKeyType={'next'}
@@ -99,7 +101,7 @@ export default class FicheBesoin extends Component {
                         }}
                     />
                     <TextInput
-                        style={styles.inputCure}
+                        style={styles.input}
                         placeholder="Client"
                         value={this.state.client}
                         returnKeyType={'next'}
@@ -113,7 +115,7 @@ export default class FicheBesoin extends Component {
                         }}
                     />
                     <TextInput
-                        style={styles.inputCure}
+                        style={styles.input}
                         placeholder="Client"
                         value={this.state.client}
                         returnKeyType={'next'}
@@ -131,12 +133,13 @@ export default class FicheBesoin extends Component {
         }
     }
 
+
     affichageConsultants(){
         if (!this.state.showConsultants){
             return(
                 <View>
-                    <TouchableOpacity onPress={() => {this.setState({showConsultants: !this.state.showConsultants})}}>
-                        <Text></Text>
+                    <TouchableOpacity style={styles.dropDown} onPress={() => {this.setState({showConsultants: !this.state.showConsultants})}}>
+                        <Text style={styles.txtDropDown}> Consultants </Text>
                     </TouchableOpacity>
                 </View>
             )
@@ -144,8 +147,8 @@ export default class FicheBesoin extends Component {
         else {
             return(
                 <View>
-                    <TouchableOpacity onPress={() => {this.setState({showConsultants: !this.state.showConsultants})}}>
-                        <Text></Text>
+                    <TouchableOpacity style={styles.dropDown} onPress={() => {this.setState({showConsultants: !this.state.showConsultants})}}>
+                        <Text style={styles.txtDropDown}> Consultants </Text>
                     </TouchableOpacity>
                     <TextInput
                         style={styles.input}
@@ -224,7 +227,7 @@ export default class FicheBesoin extends Component {
 
     render() {
         return (
-            <ScrollView style={styles.container} scrollEnabled={false} ref={'mainScrollview'}>
+            <ScrollView style={styles.container} ref={'mainScrollview'}>
 
                 <View style={styles.viewGenerale}>
 
@@ -291,7 +294,7 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    {this.affichageFactors}
+                    {this.affichageFactors()}
                     <View style={styles.durationView}>
                         <TextInput style={styles.inputDuration}
                                    placeholder={"Duration (months)"}
@@ -324,6 +327,9 @@ export default class FicheBesoin extends Component {
                                clearButtonMode={'never'}
                                keyboardType={'default'}
                                underlineColorAndroid='transparent'
+                               onFocus={() => {
+                                   return(this.showCalendar())
+                               }}
                                onChangeText={(date) => {
                                    this.setState({
                                        dateLatest: date
@@ -333,16 +339,31 @@ export default class FicheBesoin extends Component {
 
 
                     <TextInput style={styles.input}
-                               placeholder="Location"
-                               value={this.state.location}
+                               placeholder="Adress"
+                               value={this.state.adress}
                                returnKeyType={'done'}
                                clearButtonMode={'never'}
                                keyboardType={'default'}
                                underlineColorAndroid='transparent'
                                onFocus={this.textInputFocused.bind(this)}
-                               onChangeText={(ville) => {
+                               onChangeText={(adresse) => {
                                    this.setState({
-                                       location: ville
+                                       adress: adresse
+                                   })
+                               }}
+                    />
+
+                    <TextInput style={styles.input}
+                               placeholder="Zip code"
+                               value={this.state.zipCode}
+                               returnKeyType={'done'}
+                               clearButtonMode={'never'}
+                               keyboardType={'default'}
+                               underlineColorAndroid='transparent'
+                               onFocus={this.textInputFocused.bind(this)}
+                               onChangeText={(zip) => {
+                                   this.setState({
+                                       zipCode: zip
                                    })
                                }}
                     />
@@ -365,7 +386,7 @@ export default class FicheBesoin extends Component {
                         <Text style={styles.txtBouton}>Description File</Text>
                     </TouchableOpacity>
 
-                    {this.affichageConsultants}
+                    {this.affichageConsultants()}
 
                     <TouchableOpacity style={styles.bouton} onPress={(event) => this.saveShare.bind(this)}>
                         <Text style={styles.txtBouton}>Save & Share</Text>
@@ -386,6 +407,7 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         width: width,
+        backgroundColor: Couleurs.list.background
     },
     inputDate:{
         marginTop: 2,
@@ -487,7 +509,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginTop : width*0.025,
         borderStyle: 'solid',
-        borderColor: '#B9B9B9',
+        borderColor: Couleurs.list.border,
         borderWidth: 1,
         paddingLeft: 15
     },
@@ -500,7 +522,7 @@ const styles = StyleSheet.create({
     },
     txtBouton:{
         textAlign: 'center',
-        fontSize: 14,
+        fontSize: 16,
         color: Couleurs.mainColors.orange
     },
     durationView: {
@@ -509,6 +531,20 @@ const styles = StyleSheet.create({
     },
     dpw: {
         paddingTop: 30
+    },
+    dropDown:{
+        height: 50,
+        justifyContent: 'center',
+        borderRadius: 8,
+        backgroundColor: Couleurs.lightGray,
+        marginTop : width*0.05,
+        borderStyle: 'solid',
+        borderColor: Couleurs.list.border,
+        borderWidth: 1,
+    },
+    txtDropDown:{
+        textAlign: 'center',
+        fontSize: 16,
     }
 
 });

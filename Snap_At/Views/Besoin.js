@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 
 import { Navigation } from 'react-native-navigation';
+import Couleurs from '../scripts/Couleurs';
 
 import {ws} from '../index.js'
 
@@ -27,6 +28,16 @@ export default class FicheBesoin extends Component {
 
     constructor(props) {
         super(props);
+
+        this.props.navigator.setStyle({
+            navBarBackgroundColor: Couleurs.header.background,
+            navBarTextColor: Couleurs.header.title,
+            navBarButtonColor: Couleurs.header.title,
+            navBarTitleTextCentered: true
+        })
+        this.props.navigator.setTitle({
+            title: 'Details'
+        })
 
         this.state = {
             titre: '',
@@ -45,8 +56,9 @@ export default class FicheBesoin extends Component {
 
     populatePicker(){
         for (let i= 1; i<=7; i++ ){
+            let a = JSON.stringify(i)
             return(
-                <Picker.Item label=i value=i />
+                <Picker.Item label={a} value={i} />
             )
         }
     }
@@ -218,13 +230,14 @@ export default class FicheBesoin extends Component {
                                caretHidden={true}
                     />
 
-                    <TextInput style={styles.inputCure}
+                    <TextInput style={styles.input}
                                placeholder="Client"
                                value={this.state.client}
                                returnKeyType={'next'}
                                clearButtonMode={'never'}
                                keyboardType={'default'}
                                underlineColorAndroid='transparent'
+                               editable={false}
                                onChangeText={(nom) => {
                                    this.setState({
                                        client: nom
@@ -232,13 +245,14 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    <TextInput style={styles.inputFinCure}
+                    <TextInput style={styles.input}
                                placeholder="Contact Name"
                                value={this.state.contact}
                                returnKeyType={'next'}
                                clearButtonMode={'never'}
                                keyboardType={'default'}
                                underlineColorAndroid='transparent'
+                               editable={false}
                                onChangeText={(nom) => {
                                    this.setState({
                                        contact: nom
@@ -246,13 +260,14 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    <TextInput style={styles.inputFrequence}
+                    <TextInput style={styles.input}
                                placeholder="Title"
                                value={this.state.titre}
                                returnKeyType={'next'}
                                clearButtonMode={'never'}
                                keyboardType={'numeric'}
                                underlineColorAndroid='transparent'
+                               editable={false}
                                onChangeText={(titre) => {
                                    this.setState({
                                        titre : titre,
@@ -260,13 +275,14 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    <TextInput style={styles.inputAdministration}
+                    <TextInput style={styles.input}
                                placeholder="Full Description"
                                value={this.state.dureeAdmin}
                                returnKeyType={'done'}
                                clearButtonMode={'never'}
                                keyboardType={'default'}
                                underlineColorAndroid='transparent'
+                               editable={false}
                                onChangeText={(text) => {
                                    this.setState({
                                        description: text
@@ -276,14 +292,15 @@ export default class FicheBesoin extends Component {
 
                     {this.affichageFactors}
 
-                    <View style={styles.viewCure}>
-                        <TextInput style={styles.inputCure}
+                    <View style={styles.durationView}>
+                        <TextInput style={styles.inputDuration}
                                    placeholder={"Duration (months)"}
                                    value={this.state.tempsDuree}
                                    returnKeyType={'next'}
                                    clearButtonMode={'never'}
                                    keyboardType={'numeric'}
                                    underlineColorAndroid='transparent'
+                                   editable={false}
                                    onChangeText={(tempsDuree) => {
                                        this.setState({
                                            tempsDuree: tempsDuree
@@ -294,21 +311,23 @@ export default class FicheBesoin extends Component {
                         <Picker
                             style={styles.picker}
                             selectedValue={this.state.typeDuree}
+                            enabled={false}
                             onValueChange={(itemValue, itemIndex) => this.setState({typeDuree: itemValue})}
                         >
                             {this.populatePicker()}
                         </Picker>
 
-                        <Text style={{marginLEft: 10}}>days/week</Text>
+                        <Text style={styles.dpw}>Days per week</Text>
 
                     </View>
-                    <TextInput style={styles.inputAdministration}
+                    <TextInput style={styles.input}
                                placeholder="Start at latest"
                                value={this.state.dateLatest}
                                returnKeyType={'done'}
                                clearButtonMode={'never'}
                                keyboardType={'default'}
                                underlineColorAndroid='transparent'
+                               editable={false}
                                onChangeText={(date) => {
                                    this.setState({
                                        dateLatest: date
@@ -316,13 +335,14 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    <TextInput style={styles.inputAdministration}
+                    <TextInput style={styles.input}
                                placeholder="Location"
                                value={this.state.location}
                                returnKeyType={'done'}
                                clearButtonMode={'never'}
                                keyboardType={'default'}
                                underlineColorAndroid='transparent'
+                               editable={false}
                                onChangeText={(ville) => {
                                    this.setState({
                                        location: ville
@@ -330,13 +350,14 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    <TextInput style={styles.inputAdministration}
+                    <TextInput style={styles.input}
                                placeholder="Rate (€ HT)"
                                value={this.state.rate}
                                returnKeyType={'done'}
                                clearButtonMode={'never'}
                                keyboardType={'numeric'}
                                underlineColorAndroid='transparent'
+                               editable={false}
                                onChangeText={(valeur) => {
                                    this.setState({
                                        rate: valeur
@@ -344,14 +365,14 @@ export default class FicheBesoin extends Component {
                                }}
                     />
 
-                    <TouchableOpacity>
-                        <Text>Description File</Text>
+                    <TouchableOpacity style={styles.bouton}>
+                        <Text style={styles.txtBouton}>Description File</Text>
                     </TouchableOpacity>
 
                     {this.affichageConsultants}
 
-                    <TouchableOpacity onPress={(event) => this.saveShare.bind(this)}>
-                        <Text>Save & Share</Text>
+                    <TouchableOpacity style={styles.bouton} onPress={(event) => this.saveShare.bind(this)}>
+                        <Text style={styles.txtBouton}>Save & Share</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -369,36 +390,32 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         width: width,
+        backgroundColor: Couleurs.list.background
     },
     inputDate:{
         marginTop: 2,
-        backgroundColor:'#fff',
         fontSize: 21
     },
     inputAdministration:{
-        backgroundColor:'#fff',
         marginTop: 30,
         fontSize: 21
     },
     inputCure:{
         width: 200,
         marginRight: 3,
-        backgroundColor:'#fff',
         fontSize: 21
     },
     inputFinCure:{
-        backgroundColor:'#fff',
         fontSize: 21
     },
     inputFrequence:{
         width: 200,
-        backgroundColor:'#fff',
         fontSize: 21
     },
     picker:{
         width: 100,
         height: 50,
-        backgroundColor:'#fff'
+        paddingTop: 75
     },
     txtCure:{
         fontStyle: 'italic',
@@ -422,7 +439,7 @@ const styles = StyleSheet.create({
     },
     txtTitre:{
         textAlign:'center',
-        color:'#fff',
+        color:'#000',
         fontSize: 26
     },
     valeurPerfs:{
@@ -436,7 +453,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 30
     },
-
     viewFrequence:{
         flexDirection: 'row',
         marginTop: 30,
@@ -457,4 +473,46 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    input:{
+        color: '#000',
+        backgroundColor: '#fff',
+        height: 50,
+        borderRadius: 10,
+        marginTop : width*0.025,
+        borderStyle: 'solid',
+        borderColor: '#B9B9B9',
+        borderWidth: 1,
+        paddingLeft: 15
+    },
+    inputDuration:{
+        width: width/2,
+        color: '#000',
+        backgroundColor: '#fff',
+        height: 50,
+        borderRadius: 10,
+        marginTop : width*0.025,
+        borderStyle: 'solid',
+        borderColor: '#B9B9B9',
+        borderWidth: 1,
+        paddingLeft: 15
+    },
+    bouton:{
+        height: 50,
+        justifyContent: 'center',
+        borderRadius: 8,
+        backgroundColor: Couleurs.header.background,
+        marginTop : width*0.05
+    },
+    txtBouton:{
+        textAlign: 'center',
+        fontSize: 14,
+        color: Couleurs.mainColors.orange
+    },
+    durationView: {
+        flexDirection: 'row',
+        marginBottom: -10
+    },
+    dpw: {
+        paddingTop: 30
+    }
 });

@@ -117,10 +117,6 @@ export default class ListeBesoins extends Component {
         return (<SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {top : 10}]} onPress={this._ajoutBesoin.bind(this)}/>);
     }
 
-    affichageRecherche(){
-        return (<SimpleLineIcons name="magnifier" style={[styles.loupe, {top : 10}]}/>);
-    }
-
     onNavigatorEvent(event){
         // handle a deep link
         if (event.type == 'DeepLink') {
@@ -243,7 +239,6 @@ export default class ListeBesoins extends Component {
                         keyExtractor={(item) => item.titre}
                     />
                 </ScrollView>
-                {this.affichageRecherche()}
                 {this.affichageAjoutPatient()}
 
 
@@ -288,6 +283,7 @@ export default class ListeBesoins extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: Couleurs.list.background,
+        marginBottom: 50
     },
     ajoutBesoin: {
         position: 'absolute',
@@ -342,13 +338,6 @@ const styles = StyleSheet.create({
         backgroundColor: Couleurs.list.background,
         borderBottomWidth: 1,
         borderBottomColor: Couleurs.list.border,
-    },
-    loupe: {
-        position: 'absolute',
-        right : 75,
-        backgroundColor: 'transparent',
-        color: Couleurs.header.title,
-        fontSize: 40
     },
     navbar:{
         backgroundColor: Couleurs.list.background,
