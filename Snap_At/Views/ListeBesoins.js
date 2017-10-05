@@ -260,16 +260,16 @@ export default class ListeBesoins extends Component {
         return(
             <View style={styles.viewFiltres}>
                 <TouchableOpacity style={this.state.filtre === 'titre' ? styles.filtreSelection : styles.filtre} onPress={()=> {this.setFiltre('titre')}}>
-                    <Text>Titre</Text>
+                    <Text style={styles.filterTitles}>Title</Text>
                 </TouchableOpacity>
                 <TouchableOpacity  style={this.state.filtre === 'client' ? styles.filtreSelection: styles.filtre} onPress={()=> {this.setFiltre('client')}}>
-                    <Text>Client</Text>
+                    <Text style={styles.filterTitles}>Client</Text>
                 </TouchableOpacity>
                 <TouchableOpacity  style={this.state.filtre === 'date' ? styles.filtreSelection: styles.filtre} onPress={()=> {this.setFiltre('date')}}>
-                    <Text>Date</Text>
+                    <Text style={styles.filterTitles}>Date</Text>
                 </TouchableOpacity>
                 <TouchableOpacity  style={this.state.filtre === 'statut' ? styles.filtreSelection: styles.filtre} onPress={()=> {this.setFiltre('statut')}}>
-                    <Text>Statut</Text>
+                    <Text style={styles.filterTitles}>Status</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -351,12 +351,14 @@ const styles = StyleSheet.create({
     },
     filtre: {
         borderWidth: 1,
-        width: width/4.1
+        width: width/4,
+        justifyContent: 'center',
     },
     filtreSelection: {
-        backgroundColor: 'blue',
+        backgroundColor: Couleurs.header.background,
         borderWidth: 1,
-        width: width/4.1
+        width: width/4,
+        justifyContent: 'center',
     },
     flatList: {
         backgroundColor: Couleurs.list.background,
@@ -412,10 +414,12 @@ const styles = StyleSheet.create({
     },
     viewFiltres:{
         flexDirection: 'row',
-        height: 30,
+        height: 50,
         width: width,
-        justifyContent: 'space-between',
-        paddingHorizontal: 2
+    },
+    filterTitles:{
+        color: Couleurs.header.title,
+        textAlign: 'center',
     }
 
 });

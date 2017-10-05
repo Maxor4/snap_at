@@ -165,9 +165,6 @@ export default class Email extends Component {
                         keyboardType={'email-address'}
                         placeholder={'Email'}
                         underlineColorAndroid={'transparent'}
-                        onFocus={() => {
-                            this.setModalVisible(!this.state.modalVisible)
-                        }}
                     />
 
                     {this.EcranListe()}
