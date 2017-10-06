@@ -14,6 +14,8 @@ import Couleurs from './scripts/Couleurs.js'
 import Besoin from './Views/Besoin'
 import Navbar from './Views/component/Navbar.js'
 import Email from './Views/Email.js'
+import Tri from './Views/component/drawer/Tri'
+import Filtre from './Views/component/drawer/Filtre'
 
 
 export function registerScreens() {
@@ -23,6 +25,8 @@ export function registerScreens() {
     Navigation.registerComponent('SA.Navbar.RechercheBesoin', () => Navbar);
     Navigation.registerComponent('SA.Besoin', () => Besoin);
     Navigation.registerComponent('SA.SelectEmails', () => Email);
+    Navigation.registerComponent('SA.Tri', () => Tri);
+    Navigation.registerComponent('SA.Filtre', () => Filtre);
 
 }
 
@@ -63,6 +67,14 @@ export default class Index extends Component {
                 navBarTitleTextCentered: true
             }, // override the navigator style for the screen, see "Styling the navigator" below (optional)
             navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+        },
+        drawer: { // optional, add this if you want a side menu drawer in your app
+            left: { // optional, define if you want a drawer from the left
+                screen: 'SA.Tri' // unique ID registered with Navigation.registerScreen
+            },
+            right: { // optional, define if you want a drawer from the right
+                screen: 'SA.Filtre' // unique ID registered with Navigation.registerScreen
+            }
         }
     })
     }

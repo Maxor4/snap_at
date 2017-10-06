@@ -34,6 +34,8 @@ export default class FicheBesoin extends Component {
         super(props);
 
         this.state = {
+            data:[],
+            date : dateFormat(new Date(), 'dd/mm/yyyy'),
             clients:[],
             titre: '',
             contactcli: '',
@@ -261,10 +263,8 @@ export default class FicheBesoin extends Component {
     }
 
     recherche(text) {
-        /*let temp = arrayFromHashes(ws.besoins),
-            besoinFilter = ws.besoins;*/
-        let temp = this.state.dataSet,
-            besoinFilter = this.state.dataSet;
+        let temp = ws.Clients,
+            besoinFilter = ws.Clients;
         let re = /^([a-zA-Z0-9_])*$/;
         if(!re.test(text)){
             this.setState({text: text.substring(0, text.length-1)},() => {text = this.state.text;});
@@ -276,7 +276,7 @@ export default class FicheBesoin extends Component {
             let regex = new RegExp(text.toLowerCase(), 'i');
 
             for (let key in temp) {
-                if(temp[key].client.toLowerCase().match(regex)) {
+                if(temp[key].name.toLowerCase().match(regex)) {
                     besoinFilter.push(temp[key]);
                 }
             }
@@ -290,8 +290,7 @@ export default class FicheBesoin extends Component {
 
     displayListClient(){
         if (!this.state.showListClient) {
-            clientListOff = function(options) {
-                return {
+            let clientListOff = {
                     color: '#000',
                     backgroundColor: '#fff',
                     height: 50,
@@ -302,9 +301,8 @@ export default class FicheBesoin extends Component {
                     borderWidth: 1,
                     paddingLeft: 15
                 }
-            }
             return (
-                <TextInput style={clientListOff()}
+                <TextInput style={clientListOff}
                            placeholder="Client"
                            ref={'client'}
                            value={this.state.client}
@@ -323,8 +321,7 @@ export default class FicheBesoin extends Component {
                 />
             );
         }else{
-            clientListOn = function(options) {
-                return {
+            let clientListOn = {
                     color: '#000',
                     backgroundColor: '#fff',
                     height: 50,
@@ -336,10 +333,10 @@ export default class FicheBesoin extends Component {
                     paddingLeft: 15,
                     paddingTop: 15
                 }
-            }
+
             return(
                 <View>
-                    <TextInput style={clientListOn()}
+                    <TextInput style={clientListOn}
                                placeholder="Client"
                                value={this.state.client}
                                returnKeyType={'next'}
@@ -413,12 +410,7 @@ export default class FicheBesoin extends Component {
 
                 <View style={styles.viewGenerale}>
 
-                    <TextInput style={styles.inputDate}
-                               value={dateJour}
-                               underlineColorAndroid='transparent'
-                               editable={false}
-                               caretHidden={true}
-                    />
+                    <Text>{this.state.date}</Text>
 
                     {this.displayListClient()}
 
@@ -434,7 +426,7 @@ export default class FicheBesoin extends Component {
                                underlineColorAndroid='transparent'
                                onChangeText={(nom) => {
                                    this.setState({
-                                       contact: nom
+                                       contactcli: nom
                                    })
                                }}
                     />
@@ -444,7 +436,7 @@ export default class FicheBesoin extends Component {
                                value={this.state.titre}
                                returnKeyType={'next'}
                                clearButtonMode={'never'}
-                               keyboardType={'numeric'}
+                               keyboardType={'default'}
                                underlineColorAndroid='transparent'
                                onChangeText={(titre) => {
                                    this.setState({
@@ -594,13 +586,17 @@ export default class FicheBesoin extends Component {
             nomconscinq: this.state.nomconscinq,
             address: this.state.address,
             zipCode: this.state.zipCode,
-            tarif: this.state.tarif,
+            tarif: this.state.tarif
         };
 
-        ws.creationBesoin(besoin, () => {
+        /*ws.creationBesoin(besoin, () => {
             this.props.navigator.showModal({
                 screen: 'SA.SelectEmails'
             })
+        })*/
+
+        this.props.navigator.showModal({
+            screen: 'SA.SelectEmails'
         })
 
     }

@@ -47,11 +47,11 @@ export default class ListeBesoins extends Component {
             refreshing: false,
             liste: true,
             filtre: 'titre',
+            tri: 'statut'
         };
     }
 
-    componentDidMount()
-    {
+    componentDidMount() {
        this.refreshListe();
     }
 
@@ -62,7 +62,7 @@ export default class ListeBesoins extends Component {
         })
     }
 
-    affichageAjoutPatient() {
+    affichageAjoutBesoin() {
         return (
             <SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {top : 10}]} onPress={this._ajoutBesoin.bind(this)}/>
         );
@@ -74,15 +74,62 @@ export default class ListeBesoins extends Component {
             const parts = event.link.split('/'); // Link parts
             const payload = event.payload; // (optional) The payload
 
-            if (parts[0] === 'rechercheBesoin') {
-                this.recherche(payload);
+            switch (parts[0]){
+
+                case 'rechercheBesoin':
+                    this.recherche(payload);
+                    break;
+
+                case 'filtre':
+                    this.setState({
+                        filtre: payload
+                    });
+                    break;
+
+                case 'tri':
+                    this.setState({
+                        tri: payload
+                    }, () => {this.triListe()});
+                    break;
             }
         }
     }
 
+    triListe(){
+        let temp = this.state.data;
+
+        switch (this.state.tri){
+
+            case 'titre':
+                temp.sort(function(a, b){
+                    return a.titre.toLowerCase() == b.titre.toLowerCase() ? 0 : a.titre.toLowerCase() < b.titre.toLowerCase() ? -1 : 1;
+                })
+                break;
+
+            case 'client':
+                temp.sort(function(a, b){
+                    return a.client.toLowerCase() == b.client.toLowerCase() ? 0 : a.client.toLowerCase() < b.client.toLowerCase() ? -1 : 1;
+                })
+                break;
+
+            case 'date':
+                temp.sort(function(a, b){
+                    return a.date == b.date ? 0 : a.date < b.date ? 1 : -1;
+                })
+                break;
+
+            case 'statut':
+                temp.sort(function(a, b){
+                    return a.statut.toLowerCase() === b.statut.toLowerCase() ? 0 : a.statut.toLowerCase() === 'open' ? -1 : a.statut.toLowerCase() < b.statut.toLowerCase() ? 1 : -1;
+                })
+                break;
+        }
+        this.setState({
+            data: temp
+        })
+    }
+
     recherche(text) {
-        /*let temp = arrayFromHashes(ws.besoins),
-            besoinFilter = ws.besoins;*/
         let temp = ws.Besoins,
             besoinFilter = ws.Besoins,
             re = /^([a-zA-Z0-9_ \/])*$/;
@@ -148,11 +195,8 @@ export default class ListeBesoins extends Component {
             this.setState({
                 data: ws.Besoins,
                 refreshing: false
-            })
-        });
-        /*this.setState({
-            refreshing: false
-        })*/
+            }, () => {this.triListe()})
+});
     }
 
 
@@ -177,6 +221,23 @@ export default class ListeBesoins extends Component {
         this.setState({filtre: choix})
     }
 
+    ligneTitre(){
+        if (this.state.tri === 'client'){
+            return(
+                <Text style={styles.titleText}>
+                    Client : {item.client}
+                </Text>
+            )
+        }
+        else {
+            return (
+                <Text style={styles.titleText}>
+                    Title : {item.titre}
+                </Text>
+            )
+        }
+    }
+
 
     _renderItem(item) {
         let swipeoutBtns = [
@@ -192,6 +253,7 @@ export default class ListeBesoins extends Component {
 
             itemSelect = null;
 
+
         return(
         <Swipeout right={swipeoutBtns} autoClose={true} onOpen={() => {itemSelect = item }} buttonWidth={70} style={styles.touchable}>
             <TouchableOpacity  onPress={() => {this._choixBesoin(item)}}>
@@ -205,7 +267,7 @@ export default class ListeBesoins extends Component {
                         Status : {item.statut}
                     </Text>
                     <Text style={styles.dateText}>
-                        Date : {item.datecreation.length[item.datecreation.length-9]}
+                        Date : {item.datecreation.substring(0, item.datecreation.length-15)}
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -216,17 +278,21 @@ export default class ListeBesoins extends Component {
     listeFiltre(){
         return(
             <View style={styles.viewFiltres}>
-                <TouchableOpacity style={this.state.filtre === 'titre' ? styles.filtreSelection : styles.filtre} onPress={()=> {this.setFiltre('titre')}}>
-                    <Text style={styles.filterTitles}>Title</Text>
+                <TouchableOpacity  style={styles.filtre}
+                                   onPress={()=> {
+                                   this.props.navigator.toggleDrawer({
+                                       side: 'left', // the side of the drawer since you can have two, 'left' / 'right'
+                                       animated: true, // does the toggle have transition animation or does it happen immediately (optional)
+                                   })}}>
+                    <Text style={styles.filterTitles}>Sort By</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={this.state.filtre === 'client' ? styles.filtreSelection: styles.filtre} onPress={()=> {this.setFiltre('client')}}>
-                    <Text style={styles.filterTitles}>Client</Text>
-                </TouchableOpacity>
-                <TouchableOpacity  style={this.state.filtre === 'date' ? styles.filtreSelection: styles.filtre} onPress={()=> {this.setFiltre('date')}}>
-                    <Text style={styles.filterTitles}>Date</Text>
-                </TouchableOpacity>
-                <TouchableOpacity  style={this.state.filtre === 'statut' ? styles.filtreSelection: styles.filtre} onPress={()=> {this.setFiltre('statut')}}>
-                    <Text style={styles.filterTitles}>Status</Text>
+                <TouchableOpacity  style={styles.filtre}
+                                   onPress={()=> {
+                                   this.props.navigator.toggleDrawer({
+                                       side: 'right', // the side of the drawer since you can have two, 'left' / 'right'
+                                       animated: true, // does the toggle have transition animation or does it happen immediately (optional)
+                                   })}}>
+                    <Text style={styles.filterTitles}>Search By</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -253,7 +319,7 @@ export default class ListeBesoins extends Component {
                         keyExtractor={(item) => item.titre}
                     />
                 </ScrollView>
-                {this.affichageAjoutPatient()}
+                {this.affichageAjoutBesoin()}
 
 
             </View>
@@ -309,15 +375,9 @@ const styles = StyleSheet.create({
     },
     filtre: {
         borderWidth: 1,
-        width: width/4,
+        width: width/2,
         justifyContent: 'center',
         backgroundColor: Couleurs.list.background
-    },
-    filtreSelection: {
-        backgroundColor: Couleurs.header.background,
-        borderWidth: 1,
-        width: width/4,
-        justifyContent: 'center',
     },
     flatList: {
         backgroundColor: Couleurs.list.background,
@@ -373,6 +433,7 @@ const styles = StyleSheet.create({
     },
     viewFiltres:{
         flexDirection: 'row',
+        justifyContent: 'space-between',
         height: 50,
         width: width,
     },

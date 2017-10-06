@@ -16,7 +16,6 @@ function WebService() {
 
     this.token = '';
     this.id = null;
-    this.Username= null;
     this.navigator = null;
     this.Besoins = {};
     this.Clients = {};
@@ -239,8 +238,10 @@ WebService.prototype.creationBesoin = function(besoin, callback, fallback) {
 
     this.request(this.serveur+'besoin/create', 'POST', form, (data) =>
     {
+        alert('reussi')
         typeof callback === 'function' ? callback(data) : null;
     }, function(data) {
+        alert('faallback')
         fallback(data);
     });
 

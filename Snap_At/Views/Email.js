@@ -3,10 +3,8 @@
  */
 import React, { Component} from 'react';
 import {
-    ActivityIndicator,
     Dimensions,
     FlatList,
-    Modal,
     ScrollView,
     StyleSheet,
     Text,
@@ -31,9 +29,9 @@ export default class Email extends Component {
         super(props);
 
         this.state = {
-            emails: [],
+            emails: ['erjesklfs','ffdjsklfds','fdjsklfds','ffdsjkflfds'],
             email: '',
-            modalVisible: false,
+            showListCommerciaux: false
         };
 
         this.props.navigator.setStyle({
@@ -67,8 +65,8 @@ export default class Email extends Component {
     }
 
     recherche(){
-        let temp = ws.commerciaux,
-            emailFilter = ws.commerciaux;
+        let temp = ws.Commerciaux,
+            emailFilter = ws.Commerciaux;
 
         if(typeof text === 'string' && text.length > 0){
             emailFilter = [];
@@ -104,7 +102,7 @@ export default class Email extends Component {
 
     selectEmail(item){
         this.state.emails.push(item);
-        this.setModalVisible(!this.state.modalVisible)
+        this.setState({showListCommerciaux: false},  ()  =>  {alert(this.state.emails)})
     }
 
     _renderItem(item) {
@@ -124,6 +122,81 @@ export default class Email extends Component {
         )
     };
 
+    displayListCommerciaux(){
+        if (!this.state.showListCommerciaux) {
+            let commerciauxListOff =
+                {
+                    color: '#000',
+                    backgroundColor: '#fff',
+                    height: 50,
+                    borderRadius: 10,
+                    marginTop : width*0.025,
+                    borderStyle: 'solid',
+                    borderColor: '#B9B9B9',
+                    borderWidth: 1,
+                    paddingLeft: 15
+                };
+            return (
+                <TextInput style={{commerciauxListOff}}
+                           placeholder="Client"
+                           ref={'client'}
+                           value={this.state.email}
+                           returnKeyType={'next'}
+                           clearButtonMode={'never'}
+                           keyboardType={'default'}
+                           underlineColorAndroid='transparent'
+                           onFocus={() => {
+                               this.setState({showListCommerciaux: true})}}
+                           onChangeText={(mail) => {
+                               this.setState({
+                                   email: mail
+                               });
+                               this.recherche(mail)
+                           }}
+                />
+            );
+        }else{
+            let commerciauxListOn = {
+                    color: '#000',
+                    backgroundColor: '#fff',
+                    height: 50,
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10,
+                    borderStyle: 'solid',
+                    borderColor: '#B9B9B9',
+                    borderWidth: 1,
+                    paddingLeft: 15,
+                    paddingTop: 15
+                };
+            return(
+                <View>
+                    <TextInput style={{commerciauxListOn}}
+                               placeholder="Client"
+                               value={this.state.email}
+                               returnKeyType={'next'}
+                               clearButtonMode={'never'}
+                               keyboardType={'default'}
+                               underlineColorAndroid='transparent'
+                               onFocus={() => {this.setState({showListCommerciaux: true})}}
+                               onEndEditing={() => {this.setState({showListCommerciaux: false})}}
+                               onChangeText={(nom) => {
+                                   this.setState({
+                                       email: nom
+                                   });
+                                       this.recherche(nom)
+                               }}
+                    />
+                    <FlatList
+                        data={this.state.data}
+                        extraData={this.state}
+                        renderItem={({item}) => this._renderEmail(item)}
+                        keyExtractor={(item) => item.client}
+                    />
+                </View>
+            );
+        }
+    }
+
     EcranListe() {
         return (
             <ScrollView style={{height: 200}}>
@@ -138,55 +211,13 @@ export default class Email extends Component {
         );
     }
 
-    EcranModal(){
-        return(
-            <Modal animationType="slide" style={styles.modal} transparent={false} visible={this.state.modalVisible}>
-                <TextInput
-                    ref={'email'}
-                    style={styles.input}
-                    value={this.state.email}
-                    keyboardType={'email-address'}
-                    placeholder={'Email'}
-                    underlineColorAndroid={'transparent'}
-                    autoFocus={true}
-                    onChangeText={(text) => {
-                        this.setState({
-                            email: text,
-                        });
-                        this.recherche()
-                    }}
-                    returnKeyType={'next'}
-                />
-
-                <ScrollView>
-                    <FlatList
-                        data={this.state.data}
-                        extraData={this.state}
-                        renderItem={({item}) => this._renderEmail(item)}
-                        keyExtractor={(item) => item}
-                    />
-                </ScrollView>
-            </Modal>
-        )
-    }
-
     render() {
         return (
             <View style={styles.container}>
 
                 <View style={styles.view}>
 
-                    {this.EcranModal()}
-
-
-                    <TextInput
-                        ref={'email'}
-                        style={styles.input}
-                        value={this.state.email}
-                        keyboardType={'email-address'}
-                        placeholder={'Email'}
-                        underlineColorAndroid={'transparent'}
-                    />
+                    {this.displayListCommerciaux()}
 
                     {this.EcranListe()}
 
@@ -207,26 +238,14 @@ export default class Email extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Couleurs.noir+'CC',
+        backgroundColor: Couleurs.black+'CC',
         paddingHorizontal: 10,
         paddingTop: 15,
         alignItems: 'center',
         justifyContent: 'center'
     },
-    modal: {
-        width: width/2,
-        backgroundColor: Couleurs.list.background+'00',
-        height: 200,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     email: {
         width: (width-5)/2
-    },
-    mainView: {
-        flex: 1,
-        backgroundColor: Couleurs.darkGray+'CC',
-        height: height
     },
     view:{
         flex: 1,
