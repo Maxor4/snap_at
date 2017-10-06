@@ -156,7 +156,6 @@ export default class ListeBesoins extends Component {
             this.setState({text: text},() => {text = this.state.text;})
         }
         if(typeof text === 'string' && text.length > 0){
-            alert(this.state.text.length);
             besoinFilter = [];
             let regex = new RegExp(text.toLowerCase(), 'i');
 
@@ -216,11 +215,13 @@ export default class ListeBesoins extends Component {
         listeData.splice(indexData, 1); // supprime la ligne dans data
 
         AsyncStorage.setItem('Wishlist', JSON.stringify(listeData), () => {
+            ws.deleteBesoin(besoin.id, () => {
                 this.setState({
-                data: listeData  //on reset les states et enregistre la listes modifée
-            }, () =>   {
+                    data: listeData  //on reset les states et enregistre la listes modifée
+                }, () =>   {
                     this.refreshListe(); // on refresh pour être sûr que la modif apparaise à l'ecran
                 });
+            })
         })
 
     }
@@ -243,10 +244,10 @@ export default class ListeBesoins extends Component {
 
         return(
         <Swipeout right={swipeoutBtns} autoClose={true} onOpen={() => {itemSelect = item }} buttonWidth={70} style={styles.touchable}>
-            <TouchableOpacity  onPress={() => {this._choixBesoin(item.itc)}}>
+            <TouchableOpacity  onPress={() => {this._choixBesoin(item)}}>
                 <View style={styles.title}>
                     <Text style={styles.titleText}>
-                        {this.state.tri === 'client' ? 'Client : '+item.client : 'Title : '+item.titre}
+                        {this.state.tri === 'client' || this.state.filtre === 'client' ? 'Client : '+item.client : 'Title : '+item.titre}
                     </Text>
                 </View>
                 <View style={styles.statusAndDate}>
@@ -303,7 +304,7 @@ export default class ListeBesoins extends Component {
                         data={this.state.data}
                         extraData={this.state}
                         renderItem={({item}) => this._renderItem(item)}
-                        keyExtractor={(item) => item.titre}
+                        keyExtractor={(item) => item.id}
                     />
                 </ScrollView>
                 {this.affichageAjoutBesoin()}
@@ -351,7 +352,7 @@ export default class ListeBesoins extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: Couleurs.list.background,
-        marginBottom: 60
+        marginBottom: 120
     },
     ajoutBesoin: {
         position: 'absolute',

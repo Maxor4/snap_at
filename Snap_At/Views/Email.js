@@ -29,8 +29,9 @@ export default class Email extends Component {
         super(props);
 
         this.state = {
-            emails: ['erjesklfs','ffdjsklfds','fdjsklfds','ffdsjkflfds'],
+            emails: [],
             email: '',
+            data: [],
             showListCommerciaux: false
         };
 
@@ -66,18 +67,20 @@ export default class Email extends Component {
             let regex = new RegExp(text.toLowerCase(), 'i');
 
             for (let key in temp) {
+                alert(temp[key])
                 if(temp[key].toLowerCase().match(regex)) {
                     emailFilter.push(temp[key]);
                 }
             }
         }
         this.setState({
-            emails: emailFilter
+            data: emailFilter
         });
 
     }
 
     deleteEmail(item){
+        alert(item)
         for (let i = 0; i < this.state.emails.length; i++) {
             if (item === this.state.email[i]) {
 
@@ -201,7 +204,7 @@ export default class Email extends Component {
     }
 
     saveShare(){
-        ws.postListeShare(() => {
+        ws.postListeShare(this.state.emails,() => {
             this.props.navigator.dismissModal()
             this.props.navigator.pop()
         })

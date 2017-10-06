@@ -86,7 +86,7 @@ export default class FicheBesoin extends Component {
 
                     <Text>{this.props.date}</Text>
 
-                    <Text style={clientList}>{this.props.besoin.client}</Text>
+                    <Text style={styles.clientList}>{this.props.besoin.client}</Text>
 
                     <Text style={styles.Input}> {this.props.besoin.contactcli}</Text>
 

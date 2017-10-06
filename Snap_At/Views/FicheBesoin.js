@@ -34,7 +34,7 @@ export default class FicheBesoin extends Component {
         super(props);
 
         this.state = {
-            data:[],
+            dataClient:[],
             date : dateFormat(new Date(), 'dd/mm/yyyy'),
             clients:[],
             titre: '',
@@ -53,12 +53,12 @@ export default class FicheBesoin extends Component {
             nomconstrois: '',
             nomconsquatre: '',
             nomconscinq: '',
-            dureem: null,
-            dureej: null,
-            datedebuttard: null,
+            dureem: '',
+            dureej: '',
+            datedebuttard: '',
             address: '',
             zipCode: '',
-            tarif: null,
+            tarif: '',
         };
 
         this.props.navigator.setStyle({
@@ -276,45 +276,74 @@ export default class FicheBesoin extends Component {
             let regex = new RegExp(text.toLowerCase(), 'i');
 
             for (let key in temp) {
-                if(temp[key].name.toLowerCase().match(regex)) {
+                if(temp[key].nom.toLowerCase().match(regex)) {
                     besoinFilter.push(temp[key]);
                 }
             }
         }
         this.setState({
-            data: besoinFilter
+            dataClient: besoinFilter
         });
     }
 
 
 
     displayListClient(){
-        return(
-            <View>
-                <TextInput style={clientList}
-                           placeholder="Client"
-                           value={this.state.client}
-                           returnKeyType={'next'}
-                           clearButtonMode={'never'}
-                           keyboardType={'default'}
-                           underlineColorAndroid='transparent'
-                           onFocus={() => {this.setState({showListClient: this.state.showListClient})}}
-                           onEndEditing={() => {this.setState({showListClient: !this.state.showListClient})}}
-                           onChangeText={(nom) => {
-                               this.setState({
-                                   client: nom
-                               }),
-                                   this.recherche(nom)
-                           }}
-                />
-                <FlatList
-                    data={this.state.data}
-                    extraData={this.state}
-                    renderItem={({item}) => this._renderItem(item)}
-                    keyExtractor={(item) => item.client}
-                />
-            </View>
-        );
+        if (!this.state.showListClient) {
+            return (
+                <View>
+                    <TextInput style={styles.clientList}
+                               placeholder="Client"
+                               value={this.state.client}
+                               returnKeyType={'next'}
+                               clearButtonMode={'never'}
+                               keyboardType={'default'}
+                               underlineColorAndroid='transparent'
+                               onFocus={() => {
+                                   this.setState({showListClient: true})
+                               }}
+                               onChangeText={(nom) => {
+                                   this.setState({
+                                       client: nom
+                                   }),
+                                       this.recherche(nom)
+                               }}
+                    />
+
+                </View>
+            )
+        } else {
+            return (
+                <View>
+                    <TextInput style={styles.clientList}
+                               placeholder="Client"
+                               value={this.state.client}
+                               returnKeyType={'next'}
+                               clearButtonMode={'never'}
+                               keyboardType={'default'}
+                               underlineColorAndroid='transparent'
+                               onFocus={() => {
+                                   this.setState({showListClient: true})
+                               }}
+                               onEndEditing={() => {
+                                   this.setState({showListClient: false})
+                               }}
+                               onChangeText={(nom) => {
+                                   this.setState({
+                                       client: nom
+                                   }),
+                                       this.recherche(nom)
+                               }}
+                    />
+                    <FlatList
+                        data={this.state.dataClient}
+                        extraData={this.state}
+                        renderItem={({item}) => this._renderItem(item)}
+                        keyExtractor={(item) => item.client}
+                    />
+                </View>
+            );
+        }
     }
 
     _choixClient(item){
@@ -543,15 +572,15 @@ export default class FicheBesoin extends Component {
             tarif: this.state.tarif
         };
 
-        /*ws.creationBesoin(besoin, () => {
+        ws.creationBesoin(besoin, () => {
             this.props.navigator.showModal({
                 screen: 'SA.SelectEmails'
             })
-        })*/
-
-        this.props.navigator.showModal({
-            screen: 'SA.SelectEmails'
         })
+
+        /*this.props.navigator.showModal({
+            screen: 'SA.SelectEmails'
+        })*/
 
     }
 

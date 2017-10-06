@@ -142,7 +142,8 @@ WebService.prototype.request = function(url, method, data, callback, fallback) {
             }
         })
             .then((response) => {
-                if(response.status === 200) {
+                if(response.status == 200 || response.status == 204 || response.status == 201) {
+                    alert('fdjsklfs: '+response.status)
                     return response.json();
                 }
                 else {
@@ -213,35 +214,36 @@ WebService.prototype.getListeCommerciaux = function (callback) {
 
 
 WebService.prototype.creationBesoin = function(besoin, callback, fallback) {
+
     let form = new FormData();
 
-        form.append('createur', this.id);
-        form.append('titre:', besoin.titre);
-        form.append('contactcli:', besoin.contactcli);
-        form.append('client', besoin.client);
-        form.append('datecreation', besoin.datecreation);
+    form.append('datecreation', besoin.datecreation);
+    form.append('titre', besoin.titre);
+    form.append('client', besoin.client);
+    form.append('contactcli:', besoin.contactcli);
         form.append('description', besoin.description);
         form.append('succesun', besoin.succesun);
         form.append('succesdeux', besoin.succesdeux);
         form.append('succestrois', besoin.succestrois);
-        form.append('dureem', besoin.dureem);
+    form.append('datedebuttard', besoin.datedebuttard);
+    form.append('dureem', besoin.dureem);
         form.append('dureej', besoin.dureej);
-        form.append('datedebuttard', besoin.datedebuttard);
-        form.append('nomconsun', besoin.nomconsun);
+    form.append('tarif', besoin.tarif);
+    form.append('nomconsun', besoin.nomconsun);
         form.append('nomconsdeux', besoin.nomconsdeux);
         form.append('nomconstrois', besoin.nomconstrois);
         form.append('nomconsquatre', besoin.nomconsquatre);
         form.append('nomconscinq', besoin.nomconscinq);
+        form.append('statut', 'Open');
+        form.append('fichierlie', null)
         form.append('address', besoin.address);
-        form.append('zipCode', besoin.zipCode);
-        form.append('tarif', besoin.tarif);
+        form.append('zipcode', besoin.zipCode);
+    form.append('createur', this.id);
 
     this.request(this.serveur+'besoin/create', 'POST', form, (data) =>
     {
-        alert('reussi')
         typeof callback === 'function' ? callback(data) : null;
     }, function(data) {
-        alert('faallback')
         fallback(data);
     });
 
@@ -268,13 +270,25 @@ WebService.prototype.creationBesoin = function(besoin, callback, fallback) {
 
 WebService.prototype.postListeShare = function(partages, callback, fallback) {
 
+    alert(partages)
     this.request(this.serveur+'besoin/create', 'POST', partages, (data) =>
     {
         alert('reussi')
         typeof callback === 'function' ? callback(data) : null;
     }, function(data) {
+        alert('fallback psot')
         fallback(data);
     });
+};
+
+WebService.prototype.deleteBesoin = function (id, callback, fallback) {
+
+    this.request(this.serveur+'besoin/delete/'+id,'DELETE', null, (data) => {
+        typeof callback === 'function' ? callback(data) : null;
+    },function(data) {
+        fallback(data);
+    });
+
 };
 
 
