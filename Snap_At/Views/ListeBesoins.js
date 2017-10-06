@@ -64,7 +64,7 @@ export default class ListeBesoins extends Component {
 
     affichageAjoutBesoin() {
         return (
-            <SimpleLineIcons name="plus" style={[styles.ajoutBesoin, {top : 10}]} onPress={this._ajoutBesoin.bind(this)}/>
+            <SimpleLineIcons name="plus" style={styles.ajoutBesoin} onPress={this._ajoutBesoin.bind(this)}/>
         );
     }
 
@@ -106,6 +106,7 @@ export default class ListeBesoins extends Component {
                 })
                 break;
 
+
             case 'client':
                 temp.sort(function(a, b){
                     return a.client.toLowerCase() == b.client.toLowerCase() ? 0 : a.client.toLowerCase() < b.client.toLowerCase() ? -1 : 1;
@@ -114,13 +115,21 @@ export default class ListeBesoins extends Component {
 
             case 'date':
                 temp.sort(function(a, b){
-                    return a.date == b.date ? 0 : a.date < b.date ? 1 : -1;
+                    return a.date == b.date ? 0 : a.date < b.date ? -1 : 1;
                 })
                 break;
 
             case 'statut':
                 temp.sort(function(a, b){
-                    return a.statut.toLowerCase() === b.statut.toLowerCase() ? 0 : a.statut.toLowerCase() === 'open' ? -1 : a.statut.toLowerCase() < b.statut.toLowerCase() ? 1 : -1;
+                    if (a.statut.toLowerCase() === 'open'){
+                        return -1
+                    }
+                    else if (b.statut.toLowerCase() === 'open'){
+                        return 1
+                    }
+                    else {
+                        return a.statut.toLowerCase() === b.statut.toLowerCase() ? 0 : a.statut.toLowerCase() < b.statut.toLowerCase() ? -1 : 1;
+                    }
                 })
                 break;
         }
@@ -200,7 +209,6 @@ export default class ListeBesoins extends Component {
     }
 
 
-
     deleteBesoin(besoin){
         let listeData = this.state.data, //listeData prend data
             indexData = listeData.indexOf(besoin);
@@ -215,27 +223,6 @@ export default class ListeBesoins extends Component {
                 });
         })
 
-    }
-
-    setFiltre(choix){
-        this.setState({filtre: choix})
-    }
-
-    ligneTitre(){
-        if (this.state.tri === 'client'){
-            return(
-                <Text style={styles.titleText}>
-                    Client : {item.client}
-                </Text>
-            )
-        }
-        else {
-            return (
-                <Text style={styles.titleText}>
-                    Title : {item.titre}
-                </Text>
-            )
-        }
     }
 
 
@@ -256,10 +243,10 @@ export default class ListeBesoins extends Component {
 
         return(
         <Swipeout right={swipeoutBtns} autoClose={true} onOpen={() => {itemSelect = item }} buttonWidth={70} style={styles.touchable}>
-            <TouchableOpacity  onPress={() => {this._choixBesoin(item)}}>
+            <TouchableOpacity  onPress={() => {this._choixBesoin(item.itc)}}>
                 <View style={styles.title}>
                     <Text style={styles.titleText}>
-                        Title : {item.titre}
+                        {this.state.tri === 'client' ? 'Client : '+item.client : 'Title : '+item.titre}
                     </Text>
                 </View>
                 <View style={styles.statusAndDate}>
@@ -348,7 +335,7 @@ export default class ListeBesoins extends Component {
             this.props.navigator.push({
                 screen: 'SA.Besoin',
                 passProps:{
-                   item : item
+                   besoin : item
                 }
             });
             this.setState({press: false});
@@ -371,7 +358,8 @@ const styles = StyleSheet.create({
         right : 15,
         backgroundColor: 'transparent',
         color: Couleurs.header.title,
-        fontSize: 40
+        fontSize: 40,
+        top : 10
     },
     filtre: {
         borderWidth: 1,

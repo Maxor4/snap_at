@@ -55,13 +55,6 @@ export default class Email extends Component {
                 refreshing: false
             })
         });
-        /*this.setState({
-            refreshing: false
-        })*/
-    }
-
-    setModalVisible(visible) {
-        this.setState({modalVisible: visible});
     }
 
     recherche(){
@@ -73,13 +66,13 @@ export default class Email extends Component {
             let regex = new RegExp(text.toLowerCase(), 'i');
 
             for (let key in temp) {
-                if(temp[key].titre.toLowerCase().match(regex)) {
+                if(temp[key].toLowerCase().match(regex)) {
                     emailFilter.push(temp[key]);
                 }
             }
         }
         this.setState({
-            data: emailFilter
+            emails: emailFilter
         });
 
     }
@@ -102,14 +95,14 @@ export default class Email extends Component {
 
     selectEmail(item){
         this.state.emails.push(item);
-        this.setState({showListCommerciaux: false},  ()  =>  {alert(this.state.emails)})
+        this.setState({showListCommerciaux: false})
     }
 
     _renderItem(item) {
         return(
             <View style={styles.email}>
-                <Text>{item}</Text>
-                <Ionicons name="ios-close" onPress={() => {this.deleteEmail(item)}}/>
+                <Text style={styles.txtEmail}>{item}</Text>
+                <Ionicons name="ios-close" style={styles.close} onPress={() => {this.deleteEmail(item)}}/>
             </View>
         )
     };
@@ -124,20 +117,8 @@ export default class Email extends Component {
 
     displayListCommerciaux(){
         if (!this.state.showListCommerciaux) {
-            let commerciauxListOff =
-                {
-                    color: '#000',
-                    backgroundColor: '#fff',
-                    height: 50,
-                    borderRadius: 10,
-                    marginTop : width*0.025,
-                    borderStyle: 'solid',
-                    borderColor: '#B9B9B9',
-                    borderWidth: 1,
-                    paddingLeft: 15
-                };
             return (
-                <TextInput style={{commerciauxListOff}}
+                <TextInput style={styles.commerciauxList}
                            placeholder="Client"
                            ref={'client'}
                            value={this.state.email}
@@ -156,21 +137,9 @@ export default class Email extends Component {
                 />
             );
         }else{
-            let commerciauxListOn = {
-                    color: '#000',
-                    backgroundColor: '#fff',
-                    height: 50,
-                    borderTopRightRadius: 10,
-                    borderTopLeftRadius: 10,
-                    borderStyle: 'solid',
-                    borderColor: '#B9B9B9',
-                    borderWidth: 1,
-                    paddingLeft: 15,
-                    paddingTop: 15
-                };
             return(
                 <View>
-                    <TextInput style={{commerciauxListOn}}
+                    <TextInput style={styles.commerciauxList}
                                placeholder="Client"
                                value={this.state.email}
                                returnKeyType={'next'}
@@ -221,8 +190,10 @@ export default class Email extends Component {
 
                     {this.EcranListe()}
 
+                    <TouchableOpacity style={styles.bouton} onPress={this.saveShare.bind(this)}>
+                        <Text style={styles.txtBouton}>Save & Share</Text>
+                    </TouchableOpacity>
                 </View>
-
 
             </View>
         );
@@ -230,7 +201,10 @@ export default class Email extends Component {
     }
 
     saveShare(){
-
+        ws.postListeShare(() => {
+            this.props.navigator.dismissModal()
+            this.props.navigator.pop()
+        })
     }
 
 }
@@ -238,25 +212,25 @@ export default class Email extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Couleurs.black+'CC',
+        backgroundColor: Couleurs.fondTransparent+'E6',
         paddingHorizontal: 10,
         paddingTop: 15,
         alignItems: 'center',
         justifyContent: 'center'
     },
     email: {
-        width: (width-5)/2
+        width: (width-5)/2,
+        flexDirection: 'row'
     },
     view:{
-        flex: 1,
         borderRadius: 10,
-        paddingBottom: 10,
+        paddingVertical: 10,
         backgroundColor:'#fff',
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
         width: width/4*3,
-        height: height/2
+        height: height/1.5
     },
     input:{
         color: '#000',
@@ -271,7 +245,45 @@ const styles = StyleSheet.create({
         width: 200
     },
     list:{
+        flex: 1,
+        width: width/5*3,
+        marginTop: 10
+    },
+    commerciauxList: {
+        color: '#000',
+        backgroundColor: '#fff',
         height: 50,
-        backgroundColor: Couleurs.rouge
-    }
+        width: width/2,
+        borderRadius: 10,
+        borderStyle: 'solid',
+        borderColor: '#B9B9B9',
+        borderWidth: 1,
+        paddingLeft: 15,
+        paddingTop: 15,
+        marginBottom: 5,
+    },
+    txtEmail:{
+        fontSize: 20,
+        textAlign: 'center',
+        marginRight: 10,
+        color: Couleurs.header.title
+    },
+    close:{
+        fontSize: 36,
+        position: 'absolute',
+        right: 5,
+        color: Couleurs.black
+    },
+    bouton:{
+        paddingHorizontal: 5,
+        height: 50,
+        justifyContent: 'center',
+        borderRadius: 8,
+        backgroundColor: Couleurs.header.background,
+    },
+    txtBouton:{
+        textAlign: 'center',
+        fontSize: 16,
+        color: Couleurs.mainColors.orange
+    },
 });

@@ -266,6 +266,18 @@ WebService.prototype.creationBesoin = function(besoin, callback, fallback) {
      }*/
 };
 
+WebService.prototype.postListeShare = function(partages, callback, fallback) {
+
+    this.request(this.serveur+'besoin/create', 'POST', partages, (data) =>
+    {
+        alert('reussi')
+        typeof callback === 'function' ? callback(data) : null;
+    }, function(data) {
+        fallback(data);
+    });
+};
+
+
 WebService.prototype.getToken = function (callback, boucle){
 
     boucle = typeof boucle === 'undefined' ? 0 : boucle;

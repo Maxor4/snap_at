@@ -289,81 +289,35 @@ export default class FicheBesoin extends Component {
 
 
     displayListClient(){
-        if (!this.state.showListClient) {
-            let clientListOff = {
-                    color: '#000',
-                    backgroundColor: '#fff',
-                    height: 50,
-                    borderRadius: 10,
-                    marginTop : width*0.025,
-                    borderStyle: 'solid',
-                    borderColor: '#B9B9B9',
-                    borderWidth: 1,
-                    paddingLeft: 15
-                }
-            return (
-                <TextInput style={clientListOff}
+        return(
+            <View>
+                <TextInput style={clientList}
                            placeholder="Client"
-                           ref={'client'}
                            value={this.state.client}
                            returnKeyType={'next'}
                            clearButtonMode={'never'}
                            keyboardType={'default'}
                            underlineColorAndroid='transparent'
-                           onFocus={() => {
-                               this.setState({showListClient: !this.state.showListClient})}}
-                           onChangeText={(nom, text) => {
+                           onFocus={() => {this.setState({showListClient: this.state.showListClient})}}
+                           onEndEditing={() => {this.setState({showListClient: !this.state.showListClient})}}
+                           onChangeText={(nom) => {
                                this.setState({
                                    client: nom
                                }),
-                                   this.recherche(text)
+                                   this.recherche(nom)
                            }}
                 />
-            );
-        }else{
-            let clientListOn = {
-                    color: '#000',
-                    backgroundColor: '#fff',
-                    height: 50,
-                    borderTopRightRadius: 10,
-                    borderTopLeftRadius: 10,
-                    borderStyle: 'solid',
-                    borderColor: '#B9B9B9',
-                    borderWidth: 1,
-                    paddingLeft: 15,
-                    paddingTop: 15
-                }
-
-            return(
-                <View>
-                    <TextInput style={clientListOn}
-                               placeholder="Client"
-                               value={this.state.client}
-                               returnKeyType={'next'}
-                               clearButtonMode={'never'}
-                               keyboardType={'default'}
-                               underlineColorAndroid='transparent'
-                               onFocus={() => {this.setState({showListClient: this.state.showListClient})}}
-                               onEndEditing={() => {this.setState({showListClient: !this.state.showListClient})}}
-                               onChangeText={(nom) => {
-                                   this.setState({
-                                       client: nom
-                                   }),
-                                       this.recherche(nom)
-                               }}
-                    />
-                    <FlatList
-                        data={this.state.data}
-                        extraData={this.state}
-                        renderItem={({item}) => this._renderItem(item)}
-                        keyExtractor={(item) => item.client}
-                    />
-                </View>
-            );
-        }
+                <FlatList
+                    data={this.state.data}
+                    extraData={this.state}
+                    renderItem={({item}) => this._renderItem(item)}
+                    keyExtractor={(item) => item.client}
+                />
+            </View>
+        );
     }
 
-    _choixBesoin(item){
+    _choixClient(item){
         if (this.state.press) {
             this.setState({client: item.client});
             this.setState({press: false});
@@ -393,7 +347,7 @@ export default class FicheBesoin extends Component {
 
         return(
             <Swipeout right={swipeoutBtns} autoClose={true} onOpen={() => {itemSelect = item }}  buttonWidth={70} style={styles.touchable}>
-                <TouchableOpacity  onPress={() => {this._choixBesoin(item)}}>
+                <TouchableOpacity  onPress={() => {this._choixClient(item)}}>
                     <View style={styles.title}>
                         <Text style={styles.titleText}>
                            {item.client}
@@ -769,7 +723,6 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderColor: Couleurs.list.border,
         borderWidth: 1,
-        justifyContent: 'center'
     },
     txtDropDown:{
         textAlign: 'center',
@@ -792,6 +745,18 @@ const styles = StyleSheet.create({
     },
     titleText:{
         color: Couleurs.header.title
+    },
+    clientList: {
+        color: '#000',
+        backgroundColor: '#fff',
+        height: 50,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+        borderStyle: 'solid',
+        borderColor: '#B9B9B9',
+        borderWidth: 1,
+        paddingLeft: 15,
+        paddingTop: 15
     }
 
 });

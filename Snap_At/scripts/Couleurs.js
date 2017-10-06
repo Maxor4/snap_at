@@ -20,6 +20,8 @@ var Couleurs = {
         border: '#B9B9B9',
     },
 
+    fondTransparent: '#1E1E1E',
+
     blanc: '#FFFFFF',
     rouge: '#990000',
     bleuClair: '#00aeef',

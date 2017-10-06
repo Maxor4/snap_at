@@ -11,23 +11,31 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,
+    FlatList,
 } from 'react-native';
 
 import { Navigation } from 'react-native-navigation';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Couleurs from '../scripts/Couleurs';
+import Swipeout from 'react-native-swipeout';
 
 import {ws} from '../index.js'
 
 var width = Dimensions.get('window').width,
-    dateFormat = require('dateformat');
+    dateFormat = require('dateformat'),
+    timeoutBouton= 2000;
 
 const dateJour = dateFormat(new Date(), 'dd/mm/yyyy');
 
-export default class Besoin extends Component {
+export default class FicheBesoin extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+
+        };
 
         this.props.navigator.setStyle({
             navBarBackgroundColor: Couleurs.header.background,
@@ -35,356 +43,83 @@ export default class Besoin extends Component {
             navBarButtonColor: Couleurs.header.title,
             navBarTitleTextCentered: true
         })
+
         this.props.navigator.setTitle({
-            title: 'Details'
+            title: ''
         })
-
-        this.state = {
-            titre: '',
-            contact: '',
-            client: '',
-            date: dateJour,
-            showFactors: false,
-            factor: '',
-            showConsultants: false,
-            consultant: '',
-            tempsDuree: null,
-            typeDuree: 'Jour',
-            dateLatest: null,
-            location: '',
-            rate: null,
-        };
     }
 
-    populatePicker(){
-        for (let i= 1; i<=7; i++ ){
-            let a = JSON.stringify(i)
-            return(
-                <Picker.Item label={a} value={i} />
-            )
-        }
-    }
 
     affichageFactors(){
-        if (!this.state.showFactors){
-            return(
-                <View>
-                    <TouchableOpacity onPress={() => {this.setState({showFactors: !this.state.showFactors})}}>
-                        <Text></Text>
-                    </TouchableOpacity>
-                </View>
-            )
-        }
-        else {
-            return(
-                <View>
-                    <TouchableOpacity onPress={() => {this.setState({showFactors: !this.state.showFactors})}}>
-                        <Text></Text>
-                    </TouchableOpacity>
-                    <TextInput
-                        style={styles.inputCure}
-                        placeholder="Factor"
-                        value={this.state.factor}
-                        returnKeyType={'next'}
-                        clearButtonMode={'never'}
-                        keyboardType={'default'}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(nom) => {
-                            this.setState({
-                                factor: nom
-                            })
-                        }}
-                    />
-                    <TextInput
-                        style={styles.inputCure}
-                        placeholder="Factor"
-                        value={this.state.factor}
-                        returnKeyType={'next'}
-                        clearButtonMode={'never'}
-                        keyboardType={'default'}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(nom) => {
-                            this.setState({
-                                factor: nom
-                            })
-                        }}
-                    />
-                    <TextInput
-                        style={styles.inputCure}
-                        placeholder="Factor"
-                        value={this.state.factor}
-                        returnKeyType={'next'}
-                        clearButtonMode={'never'}
-                        keyboardType={'default'}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(nom) => {
-                            this.setState({
-                                factor: nom
-                            })
-                        }}
-                    />
-                </View>
-            )
-        }
+        return(
+            <View>
+                <Text style={styles.txtDropDown}> Factors </Text>
+
+                <Text style={styles.subInput}> {this.props.besoin.succesun}</Text>
+                <Text style={styles.subInput}> {this.props.besoin.succesdeux}</Text>
+                <Text style={styles.subInput}> {this.props.besoin.succestrois}</Text>
+
+            </View>
+        )
     }
 
     affichageConsultants(){
-        if (!this.state.showConsultants){
-            return(
-                <View>
-                    <TouchableOpacity onPress={() => {this.setState({showConsultants: !this.state.showConsultants})}}>
-                        <Text></Text>
-                    </TouchableOpacity>
-                </View>
-            )
-        }
-        else {
-            return(
-                <View>
-                    <TouchableOpacity onPress={() => {this.setState({showConsultants: !this.state.showConsultants})}}>
-                        <Text></Text>
-                    </TouchableOpacity>
-                    <TextInput
-                        style={styles.inputCure}
-                        placeholder="Consultant"
-                        value={this.state.consultant}
-                        returnKeyType={'next'}
-                        clearButtonMode={'never'}
-                        keyboardType={'default'}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(nom) => {
-                            this.setState({
-                                consultant: nom
-                            })
-                        }}
-                    />
-                    <TextInput
-                        style={styles.inputCure}
-                        placeholder="Consultant"
-                        value={this.state.consultant}
-                        returnKeyType={'next'}
-                        clearButtonMode={'never'}
-                        keyboardType={'default'}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(nom) => {
-                            this.setState({
-                                consultant: nom
-                            })
-                        }}
-                    />
-                    <TextInput
-                        style={styles.inputCure}
-                        placeholder="Consultant"
-                        value={this.state.consultant}
-                        returnKeyType={'next'}
-                        clearButtonMode={'never'}
-                        keyboardType={'default'}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(nom) => {
-                            this.setState({
-                                consultant: nom
-                            })
-                        }}
-                    />
-                    <TextInput
-                        style={styles.inputCure}
-                        placeholder="Consultant"
-                        value={this.state.consultant}
-                        returnKeyType={'next'}
-                        clearButtonMode={'never'}
-                        keyboardType={'default'}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(nom) => {
-                            this.setState({
-                                consultant: nom
-                            })
-                        }}
-                    />
-                    <TextInput
-                        style={styles.inputCure}
-                        placeholder="Consultant"
-                        value={this.state.consultant}
-                        returnKeyType={'next'}
-                        clearButtonMode={'never'}
-                        keyboardType={'default'}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(nom) => {
-                            this.setState({
-                                consultant: nom
-                            })
-                        }}
-                    />
-                </View>
-            )
-        }
+        return(
+            <View>
+                <Text style={styles.txtDropDown}> Consultants </Text>
+
+                <Text style={styles.subInput}> {this.props.besoin.nomconsun}</Text>
+                <Text style={styles.subInput}> {this.props.besoin.nomconsdeux}</Text>
+                <Text style={styles.subInput}> {this.props.besoin.nomconstrois}</Text>
+                <Text style={styles.subInput}> {this.props.besoin.nomconsquatre}</Text>
+                <Text style={styles.subInput}> {this.props.besoin.nomconscinq}</Text>
+
+            </View>
+        )
     }
 
     render() {
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container} ref={'mainScrollview'}>
 
                 <View style={styles.viewGenerale}>
 
-                    <TextInput style={styles.inputDate}
-                               value={dateJour}
-                               underlineColorAndroid='transparent'
-                               editable={false}
-                               caretHidden={true}
-                    />
+                    <Text>{this.props.date}</Text>
 
-                    <TextInput style={styles.input}
-                               placeholder="Client"
-                               value={this.state.client}
-                               returnKeyType={'next'}
-                               clearButtonMode={'never'}
-                               keyboardType={'default'}
-                               underlineColorAndroid='transparent'
-                               editable={false}
-                               onChangeText={(nom) => {
-                                   this.setState({
-                                       client: nom
-                                   })
-                               }}
-                    />
+                    <Text style={clientList}>{this.props.besoin.client}</Text>
 
-                    <TextInput style={styles.input}
-                               placeholder="Contact Name"
-                               value={this.state.contact}
-                               returnKeyType={'next'}
-                               clearButtonMode={'never'}
-                               keyboardType={'default'}
-                               underlineColorAndroid='transparent'
-                               editable={false}
-                               onChangeText={(nom) => {
-                                   this.setState({
-                                       contact: nom
-                                   })
-                               }}
-                    />
+                    <Text style={styles.Input}> {this.props.besoin.contactcli}</Text>
 
-                    <TextInput style={styles.input}
-                               placeholder="Title"
-                               value={this.state.titre}
-                               returnKeyType={'next'}
-                               clearButtonMode={'never'}
-                               keyboardType={'numeric'}
-                               underlineColorAndroid='transparent'
-                               editable={false}
-                               onChangeText={(titre) => {
-                                   this.setState({
-                                       titre : titre,
-                                   })
-                               }}
-                    />
+                    <Text style={styles.Input}> {this.props.besoin.titre}</Text>
 
-                    <TextInput style={styles.input}
-                               placeholder="Full Description"
-                               value={this.state.dureeAdmin}
-                               returnKeyType={'done'}
-                               clearButtonMode={'never'}
-                               keyboardType={'default'}
-                               underlineColorAndroid='transparent'
-                               editable={false}
-                               onChangeText={(text) => {
-                                   this.setState({
-                                       description: text
-                                   })
-                               }}
-                    />
+                    <Text style={styles.Input}> {this.props.besoin.description}</Text>
 
-                    {this.affichageFactors}
+                    {this.affichageFactors()}
 
                     <View style={styles.durationView}>
-                        <TextInput style={styles.inputDuration}
-                                   placeholder={"Duration (months)"}
-                                   value={this.state.tempsDuree}
-                                   returnKeyType={'next'}
-                                   clearButtonMode={'never'}
-                                   keyboardType={'numeric'}
-                                   underlineColorAndroid='transparent'
-                                   editable={false}
-                                   onChangeText={(tempsDuree) => {
-                                       this.setState({
-                                           tempsDuree: tempsDuree
-                                       })
-                                   }}
-                        />
 
-                        <Picker
-                            style={styles.picker}
-                            selectedValue={this.state.typeDuree}
-                            enabled={false}
-                            onValueChange={(itemValue, itemIndex) => this.setState({typeDuree: itemValue})}
-                        >
-                            {this.populatePicker()}
-                        </Picker>
+                        <Text style={styles.inputDuration}> {this.props.besoin.dureem} months</Text>
+
+                        <Text style={styles.picker}> {this.props.besoin.dureej} </Text>
 
                         <Text style={styles.dpw}>Days per week</Text>
-
                     </View>
-                    <TextInput style={styles.input}
-                               placeholder="Start at latest"
-                               value={this.state.dateLatest}
-                               returnKeyType={'done'}
-                               clearButtonMode={'never'}
-                               keyboardType={'default'}
-                               underlineColorAndroid='transparent'
-                               editable={false}
-                               onChangeText={(date) => {
-                                   this.setState({
-                                       dateLatest: date
-                                   })
-                               }}
-                    />
 
-                    <TextInput style={styles.input}
-                               placeholder="Location"
-                               value={this.state.location}
-                               returnKeyType={'done'}
-                               clearButtonMode={'never'}
-                               keyboardType={'default'}
-                               underlineColorAndroid='transparent'
-                               editable={false}
-                               onChangeText={(ville) => {
-                                   this.setState({
-                                       location: ville
-                                   })
-                               }}
-                    />
+                    <Text style={styles.input}> {this.props.besoin.datedebuttard} </Text>
 
-                    <TextInput style={styles.input}
-                               placeholder="Rate (€ HT)"
-                               value={this.state.rate}
-                               returnKeyType={'done'}
-                               clearButtonMode={'never'}
-                               keyboardType={'numeric'}
-                               underlineColorAndroid='transparent'
-                               editable={false}
-                               onChangeText={(valeur) => {
-                                   this.setState({
-                                       rate: valeur
-                                   })
-                               }}
-                    />
+                    <Text style={styles.input}> {this.props.besoin.address} </Text>
 
-                    <TouchableOpacity style={styles.bouton}>
-                        <Text style={styles.txtBouton}>Description File</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.input}> {this.props.besoin.zipCode} </Text>
 
-                    {this.affichageConsultants}
+                    <Text style={styles.input}> {this.props.besoin.tarif} € HT</Text>
 
-                    <TouchableOpacity style={styles.bouton} onPress={(event) => this.saveShare.bind(this)}>
-                        <Text style={styles.txtBouton}>Save & Share</Text>
-                    </TouchableOpacity>
+                    {this.affichageConsultants()}
 
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 
-    saveShare(){
-
-    }
 
 }
 
@@ -397,7 +132,7 @@ const styles = StyleSheet.create({
     inputDate:{
         marginTop: 2,
         fontSize: 21,
-        color: Couleurs.noir
+        color: Couleurs.header.background
     },
     inputAdministration:{
         marginTop: 30,
@@ -418,7 +153,8 @@ const styles = StyleSheet.create({
     picker:{
         width: 100,
         height: 50,
-        paddingTop: 75
+        paddingTop: 75,
+        right: 3
     },
     txtCure:{
         fontStyle: 'italic',
@@ -487,6 +223,30 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         paddingLeft: 15
     },
+    inputClient:{
+        color: '#000',
+        backgroundColor: '#fff',
+        height: 50,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+        marginTop : width*0.025,
+        borderStyle: 'solid',
+        borderColor: '#B9B9B9',
+        borderWidth: 1,
+        paddingLeft: 15
+    },
+    subInput:{
+        color: '#000',
+        backgroundColor: '#fff',
+        height: 50,
+        borderRadius: 10,
+        marginTop : width*0.025,
+        borderStyle: 'solid',
+        borderColor: '#B9B9B9',
+        borderWidth: 1,
+        paddingLeft: 15,
+        marginLeft: 40
+    },
     inputDuration:{
         width: width/2,
         color: '#000',
@@ -495,7 +255,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginTop : width*0.025,
         borderStyle: 'solid',
-        borderColor: '#B9B9B9',
+        borderColor: Couleurs.list.border,
         borderWidth: 1,
         paddingLeft: 15
     },
@@ -508,14 +268,47 @@ const styles = StyleSheet.create({
     },
     txtBouton:{
         textAlign: 'center',
-        fontSize: 14,
+        fontSize: 16,
         color: Couleurs.mainColors.orange
     },
     durationView: {
         flexDirection: 'row',
-        marginBottom: -10
+        marginBottom: -10,
     },
     dpw: {
         paddingTop: 30
+    },
+    dropDown:{
+        height: 50,
+        justifyContent: 'center',
+        borderRadius: 8,
+        backgroundColor: Couleurs.lightGray,
+        marginTop : width*0.05,
+        borderStyle: 'solid',
+        borderColor: Couleurs.list.border,
+        borderWidth: 1,
+    },
+    txtDropDown:{
+        textAlign: 'center',
+        fontSize: 16,
+    },
+    dropdownarrow:{
+        color: Couleurs.noir,
+        position: 'absolute',
+        right: 15,
+        fontSize: 20,
+    },
+    touchable: {
+        backgroundColor: Couleurs.header.background,
+        height: 50,
+        borderStyle: 'solid',
+        borderColor: '#B9B9B9',
+        borderWidth: 1,
+        paddingLeft: 15,
+        paddingTop: 10
+    },
+    titleText:{
+        color: Couleurs.header.title
     }
+
 });
